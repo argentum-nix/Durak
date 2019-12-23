@@ -7,7 +7,7 @@ Clásico juego ruso de naipes, desarollado en Python y pygame. ![alt_text](https
 - Ignacio Jorquera 201873561-2  
 <ignacio.jorquera@sansano.usm.cl>
 
-# Compilación
+# Ejecución
 ```bash 
 python3 main.py
 ```
