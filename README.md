@@ -7,6 +7,10 @@ Clásico juego ruso de naipes, desarollado en Python y pygame. ![alt_text](https
 - Ignacio Jorquera 201873561-2  
 <ignacio.jorquera@sansano.usm.cl>
 
+# Compilación
+```bash 
+python3 main.py```
+
 # Consideraciones
 La aplicación está basada en libreria externa pygame, la cuál, en caso de no tenerla, debe ser instalada antes de compilar el código.
 
@@ -28,3 +32,4 @@ python -m pip install pygame
 ```
 
 Para mayor información revisar la Wiki de pygame: [pygame.org](https://www.pygame.org/wiki/GettingStarted)
+
