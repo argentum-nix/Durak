@@ -9,3 +9,18 @@ Pygame based classic russian card game. ![alt_text](https://img.shields.io/badge
 
 # Consideraciones
 La aplicación está basada en libreria externa pygame, la cuál, en caso de no tenerla, debe ser instalada antes de compilar el código.
+
+Windows:
+``` bash 
+py -m pip install -U pygame --user
+```
+Linux:
+```bash
+sudo apt-get install python3-pygame
+```
+MacOS:
+```
+python -m pip install pygame
+```
+
+Para mayor información revisar la Wiki de pygame: [pygame.org](https://www.pygame.org/wiki/GettingStarted)
