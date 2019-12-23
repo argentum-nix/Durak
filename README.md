@@ -9,7 +9,8 @@ Clásico juego ruso de naipes, desarollado en Python y pygame. ![alt_text](https
 
 # Compilación
 ```bash 
-python3 main.py```
+python3 main.py
+```
 
 # Consideraciones
 La aplicación está basada en libreria externa pygame, la cuál, en caso de no tenerla, debe ser instalada antes de compilar el código.
