@@ -18,6 +18,10 @@ Linux (Debian/Ubuntu/Mint):
 ```bash
 sudo apt-get install python3-pygame
 ```
+Linux (Red hat/Fedora)
+```bash
+sudo yum install python3-pygame
+```
 MacOS:
 ```
 python -m pip install pygame
