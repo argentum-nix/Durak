@@ -14,7 +14,7 @@ Windows:
 ``` bash 
 py -m pip install -U pygame --user
 ```
-Linux:
+Linux (Debian/Ubuntu/Mint):
 ```bash
 sudo apt-get install python3-pygame
 ```
