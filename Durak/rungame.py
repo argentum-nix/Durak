@@ -27,6 +27,7 @@ class RunGame():
         self.state_dict = {
             "INTRO": intro.Intro(),
             "MENU" : menu.Menu(),
+            #"TUTORIAL": tutorial.Tutorial()
             "JUEGO" : juego.Juego(6), # Se puede poner cualquier numero de jugadores
             "CREDITOS" :creditos.Creditos()
             }
@@ -38,10 +39,7 @@ class RunGame():
         # tecla recibida
         self.key = pygame.key.get_pressed()
         print("Instancee excitosamente la clase RunGame de rungame.py")
-        # si recibe salida, termina
-        # si recibe cualquier accion,
 
-    #def Player(self):
 
     def game_loop(self):
         for event in pygame.event.get():
@@ -74,8 +72,7 @@ class RunGame():
             if self.state.quit:
                 self.st_done = True
                 pygame.display.quit()
-            # en caso de estar en el stage
-            # now = pygame.time.get_ticks()
+                
             self.game_loop()
             self.cambiar_de_estado()
             #self.state.update(now, self.keys)

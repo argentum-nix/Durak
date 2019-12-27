@@ -43,8 +43,8 @@ class JugadorHumano(Jugador):
         del self.mano[indice]
         return carta
 
-    def manoAcotada(self, mult = 0):
-        return self.mano[0+(3*mult):3+(3*mult)]
+    def manoAcotada(self, mult):
+        return self.mano[0 + (3 * mult): 3 + (3 * mult)]
 
 class JugadorCPU(Jugador):
     def __init__(self):

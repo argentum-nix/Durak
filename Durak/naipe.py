@@ -1,9 +1,10 @@
 from botonCarta import BotonCarta
 
-class Naipe:
-    def __init__(self, calificacion, valor): 
+
+class Naipe(self):
+    def __init__(self, calificacion, valor):
         self.calificacion = calificacion
-        self.valor = valor #Valor numérico, de 6 a 14.
+        self.valor = valor  # Valor numérico, de 6 a 14.
 
     def isTrump(self, trumpSuit):
         if self.calificacion == trumpSuit:
@@ -22,9 +23,9 @@ class Naipe:
             return "A de {}".format(self.calificacion)
         else:
             return "{} de {}".format(self.valor, self.calificacion)
-    
+
     def fileNaipe(self):
-        
+
         if self.calificacion == "Picas":
             return "P_{}.png".format(self.valor)
 
@@ -41,6 +42,3 @@ class Naipe:
 
     def calificacionNaipe(self):
         return self.calificacion
-
-
-

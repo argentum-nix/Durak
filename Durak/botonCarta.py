@@ -4,9 +4,12 @@ import text_tools as tt
 
 
 class BotonCarta():
-    def __init__(self, x, y, width, height, nombre, enabled):
+    def __init__(self, x, y, width, height, nombre, activa, enabled):
 
         self.imagen = pygame.image.load(st.current_dir() + "/data/cards/{}".format(nombre)).convert_alpha()
+        if activa != False:
+            self.imagen_activa = pygame.image.load(st.current_dir() + "/data/cards/{}".format(activa)).convert_alpha()
+        self.imagen_inactiva = self.imagen
 
         self.b1 = pygame.Rect(x, y, width, height)
 
@@ -20,16 +23,23 @@ class BotonCarta():
 
 
 
-    def isPressed(self, event):
+    def mouseOverButton(self, event):
         if self.enabled == True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
-                    print("me estan clickeando")
+                    print("Me estan clickeando/hovereando")
                     return True
         else:
             print("No se puede utilizar la carta seleccionada.")
         
         return False
+
+    #se usara para cambiar de jacket para los jugadores NPC
+    def isActivePlayer(self, param):
+        if param:
+            self.imagen = self.imagen_activa
+        else:
+            self.imagen =  self.imagen_inactiva
 
     def turnOffBoton(self):
         self.enabled = False
