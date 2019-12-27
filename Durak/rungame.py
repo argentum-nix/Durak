@@ -3,29 +3,14 @@ import text_tools as tt
 
 import intro
 import menu
-# import juego
+import juego
 import creditos
 
 from naipe import Naipe 
 from baraja import Baraja 
 from jugador import Jugador, JugadorHumano, JugadorCPU
-from juego import Juego
 
-def menu_screen():
-    menu = True
-    print("Capte una clave, estoy en menu")
-    while menu:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        screen.fill(background_color)
-        S_text = tt.render_text(
-            "T", "lmao se supone que esto es el menu!", white)
-        screen.blit(S_text, (width / 2 - S_text.get_width() //
-                             2, height / 2 - S_text.get_height() // 2))
-        pygame.display.update()
- 
+
 
 class RunGame():
     def __init__(self):
@@ -42,8 +27,7 @@ class RunGame():
         self.state_dict = {
             "INTRO": intro.Intro(),
             "MENU" : menu.Menu(),
-            #"JUEGO" : juego.Juego(),
-            "JUEGO" : Juego(6), # Se puede poner cualquier numero de jugadores
+            "JUEGO" : juego.Juego(6), # Se puede poner cualquier numero de jugadores
             "CREDITOS" :creditos.Creditos()
             }
         # el estado actual (en que stage esta el juego)
