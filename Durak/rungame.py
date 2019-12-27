@@ -6,6 +6,10 @@ import menu
 # import juego
 import creditos
 
+from naipe import Naipe 
+from baraja import Baraja 
+from jugador import Jugador, JugadorHumano, JugadorCPU
+from juego import Juego
 
 def menu_screen():
     menu = True
@@ -21,20 +25,25 @@ def menu_screen():
         screen.blit(S_text, (width / 2 - S_text.get_width() //
                              2, height / 2 - S_text.get_height() // 2))
         pygame.display.update()
-
+ 
 
 class RunGame():
     def __init__(self):
-        print("Instanceando clase RunGame")
+        print("Inicializa PyGame")
         pygame.init()
         self.screen_param = (800, 500)
         self.screen = pygame.display.set_mode(self.screen_param)
-        pygame.display.set_caption('Durak')
+        # Ventana creada 
+        
+        pygame.display.set_caption('Durak') # Escribe Durak en el borde de la ventana
+        icon = pygame.image.load('data/icon/icon.png')
+        pygame.display.set_icon(icon)
         self.clock = pygame.time.Clock()
         self.state_dict = {
             "INTRO": intro.Intro(),
             "MENU" : menu.Menu(),
             #"JUEGO" : juego.Juego(),
+            "JUEGO" : Juego(6), # Se puede poner cualquier numero de jugadores
             "CREDITOS" :creditos.Creditos()
             }
         # el estado actual (en que stage esta el juego)
@@ -47,6 +56,8 @@ class RunGame():
         print("Instancee excitosamente la clase RunGame de rungame.py")
         # si recibe salida, termina
         # si recibe cualquier accion,
+
+    #def Player(self):
 
     def game_loop(self):
         for event in pygame.event.get():

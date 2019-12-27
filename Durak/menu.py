@@ -24,7 +24,7 @@ class Menu(st.Estados_Juego):
         # screen.fill(self.background_color)
         # screen.blit(jacket_button1, (0, 0))
 
-    def clean(self):
+    def clean(self): 
         pass
 
     def get_event(self, event, keys):
