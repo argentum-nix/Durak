@@ -20,11 +20,8 @@ class Menu(st.Estados_Juego):
         jacket_button2 = pygame.transform.scale(jacket_button2, (160, 226))
 
         self.images = [jacket_button1, jacket_button2]
-        print("Estoy en clase Menu de modeulo menu.py")
-        # screen.fill(self.background_color)
-        # screen.blit(jacket_button1, (0, 0))
 
-    def clean(self):
+    def clean(self): 
         pass
 
     def get_event(self, event, keys):
