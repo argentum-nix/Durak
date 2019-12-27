@@ -14,10 +14,10 @@ class BotonCarta():
 
         self.tall = y
 
-        self.imagen =  pygame.transform.scale(self.imagen, (62, 92))
+        self.imagen =  pygame.transform.scale(self.imagen, (width, height))
 
-        print("Dibujando una cartita")
         self.enabled = enabled
+
 
 
     def isPressed(self, event):
