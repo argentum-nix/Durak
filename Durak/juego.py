@@ -10,13 +10,16 @@ import text_tools as tt
 from baraja import Baraja
 from naipe import Naipe
 from jugador import Jugador, JugadorCPU, JugadorHumano
+
 from botonCarta import BotonCarta
+
 
 
 class Juego(st.Estados_Juego):
     def __init__(self, nJugadores):
 
         st.Estados_Juego.__init__(self)
+
         self.nJugadores = nJugadores
         # Crea a los n jugadores (incluyendo al usuario como jugador 0) y los guarda en una lista
         self.jugadores = self.crearJugadores(nJugadores)
@@ -78,11 +81,11 @@ class Juego(st.Estados_Juego):
             self.repartirCartas()
 
     def getTrump(self):
+
         if self.nJugadores >= 6:  # Si son 6 jugadores, no quedaran cartas en la baraja despues de repartir
             return self.baraja.sacarTrumpCon6Jugadores()
         else:
             return self.baraja.sacarTrump()
-
     def getJugadores(self):
         return self.jugadores
 
@@ -115,7 +118,6 @@ class Juego(st.Estados_Juego):
         h = 103
         manoHumano = []
        # manoHumano = list(map(lambda img: BotonCarta(x, y, w, h, img, True), [img for img in self.imagesName]))
-
         for img in self.imagesName:
             manoHumano.append(BotonCarta(x, y, w, h, img, True))
             x += 102
@@ -124,6 +126,7 @@ class Juego(st.Estados_Juego):
             x += 102
         return manoHumano
 
+
     def mostrarCantidadNaipes(self, screen, listaTextos):
         screen.blit(listaTextos[0],
                     (self.u2.getX() + 33, self.u2.getY() + 107))
@@ -131,6 +134,7 @@ class Juego(st.Estados_Juego):
         ) + 33, self.bot_ai[i].getY() + 107)), [i for i in range(5)]))
 
     def clean(self):
+
         pass
 
     def get_event(self, event, keys):
@@ -151,12 +155,14 @@ class Juego(st.Estados_Juego):
             self.quit = True
             pygame.quit()
 
+
     def mostrarTrump(self, screen):
         trumpImg = self.t1.getImg()
         trump_text = tt.render_text(
             "T", "Trump: " + self.trump.printNaipe(), self.white)
         screen.blit(trump_text, (self.t1.getX() - 65, self.t1.getY() - 18))
         screen.blit(trumpImg, (self.t1.getX(), self.t1.getY()))
+
 
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
@@ -169,6 +175,7 @@ class Juego(st.Estados_Juego):
         carta3 = self.u3.getImg()
 
         # Mano cpu muestra una carta dada vuelta
+
         cpu1 = self.bot_ai[0].getImg()
         cpu2 = self.bot_ai[1].getImg()
         cpu3 = self.bot_ai[2].getImg()
@@ -187,6 +194,7 @@ class Juego(st.Estados_Juego):
             screen.blit(carta2, (self.u2.getX(), self.u2.getY()))
             screen.blit(carta3, (self.u3.getX(), self.u3.getY()))
 
+
             screen.blit(cpu1, (self.bot_ai[0].getX(), self.bot_ai[0].getY()))
             screen.blit(cpu2, (self.bot_ai[1].getX(), self.bot_ai[1].getY()))
             screen.blit(cpu3, (self.bot_ai[2].getX(), self.bot_ai[2].getY()))
@@ -198,10 +206,12 @@ class Juego(st.Estados_Juego):
             # Muestra la trump
             self.mostrarTrump(screen)
 
+
             pygame.display.update()
             carta1 = self.u1.getImg()
             carta2 = self.u2.getImg()
             carta3 = self.u3.getImg()
+
 
             [self.get_event(event, pygame.key.get_pressed())
              for event in pygame.event.get()]
