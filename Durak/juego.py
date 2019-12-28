@@ -27,8 +27,10 @@ class Juego(st.Estados_Juego):
         self.repartirCartas()
         # Muestra la primera carta de la baraja para conseguir el trump
         self.trump = self.getTrump()
+
         self.w = 70
         self.h = 103
+
 
         self.jugadorActual = -1  # Almacena el indice del jugador actual
         self.atacantes = []
@@ -36,12 +38,15 @@ class Juego(st.Estados_Juego):
 
         # u1, u2 y u3 son las 3 cartas visibles del usuario
 
+
         # Retorna una lista con 3 o menos elementos de la mano del jugador (funciona con slicing), son clase Naipe
         self.listpos = 0
         self.manoVisible = self.jugadores[0].manoAcotada(self.listpos)
 
+
         # Lista con el nombre de los archivos de las imagenes correspondientes para cada carta en manoVisible
         self.imagesName = self.getImagesName()
+
 
        #!! rehacer con lambda x = 267, y = 370, w = 70, h = 130 - iniciales, para avanzar en 102 en lambda
         self.u1 = BotonCarta(267, 370, self.w, self.h,
@@ -55,6 +60,7 @@ class Juego(st.Estados_Juego):
         # que corresponden a los jugadores AI de 1 a 5
         self.pos = [(20, 200), (20, 20), (369, 20), (700, 20), (700, 200)]
         self.bot_ai = list(map(lambda i: BotonCarta(
+
             self.pos[i][0], self.pos[i][1], self.w, self.h, "Grey_1.png", "Blue_1.png", False), [i for i in range(5)]))
 
         # t1 es la carta trump
@@ -71,6 +77,7 @@ class Juego(st.Estados_Juego):
     def crearListButtons(self):
         list_buttons = lista(map(lambda i: BotonCarta(x,y,w,h,self.manoVisible[i].fileNaipe()),[i for i in range(2)]))
     '''
+
 
     def crearJugadores(self, nJugadores):
         jugadores = [JugadorCPU() for id in range(1, nJugadores)]
@@ -90,6 +97,7 @@ class Juego(st.Estados_Juego):
 
         if repartir == True:
             self.repartirCartas()
+
 
     def getTrump(self):
         if self.nJugadores >= 6:  # Si son 6 jugadores, no quedaran cartas en la baraja despues de repartir
@@ -113,7 +121,6 @@ class Juego(st.Estados_Juego):
     def getImagesName(self):
         return [carta.fileNaipe() for carta in self.manoVisible]
 
-        '''
     def buildHand(self):
         x = 267
         y = 370
@@ -127,10 +134,10 @@ class Juego(st.Estados_Juego):
             manoHumano.append(BotonCarta(x, y, w, h, "NULL.png", False, True))
             x += 102
         return manoHumano
-        '''
 
     def clean(self):
         pass
+
 
     def avanzarListPos(self, action):
         # usaremos cantidad para acotar cuantas veces se puede bajar/subir
@@ -204,12 +211,14 @@ class Juego(st.Estados_Juego):
         list(map(lambda i: screen.blit(self.bot_ai[i].getImg(
         ), (self.bot_ai[i].getX(), self.bot_ai[i].getY())), [i for i in range(5)]))
 
+
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
 
         # Prepara para dibujar
 
         # Mano del humano muestra 3 cartas
+
 
         # funcion aparte,ojala
         down = self.arrow_down.getImg()
@@ -234,9 +243,11 @@ class Juego(st.Estados_Juego):
             screen.blit(carta2, (self.u2.getX(), self.u2.getY()))
             screen.blit(carta3, (self.u3.getX(), self.u3.getY()))
 
+
             #!!!una funcioncita aparte tmb
             screen.blit(down, (self.arrow_down.getX(), self.arrow_down.getY()))
             screen.blit(up, (self.arrow_up.getX(), self.arrow_up.getY()))
+
 
             self.mostrarOponentes(screen)
             # Debajo de cada carta, se imprime la cantidad de naipes de cada jugador.
@@ -245,6 +256,7 @@ class Juego(st.Estados_Juego):
             self.mostrarTrump(screen)
 
             pygame.display.update()
+
 
             [self.get_event(event, pygame.key.get_pressed())
              for event in pygame.event.get()]

@@ -3,6 +3,7 @@ import pygame
 import sys_tools as st
 
 
+
 class Naipe:
     def __init__(self, calificacion, valor):
         self.calificacion = calificacion
@@ -45,9 +46,11 @@ class Naipe:
     def calificacionNaipe(self):
         return self.calificacion
 
+
         # retorna la imagen del naipe, para la lista
     def getImgNaipe(self, w, h):
         imagen = pygame.image.load(
             st.current_dir() + "/data/cards/{}".format(self.fileNaipe())).convert_alpha()
         imagen = pygame.transform.scale(imagen, (w, h))
         return imagen
+
