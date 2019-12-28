@@ -1,5 +1,5 @@
 # Durak
-Clásico juego ruso de naipes, desarollado en Python con pygame. ![alt_text](https://img.shields.io/badge/approved-no-red) ![alt_text](https://img.shields.io/badge/build-stable-green) ![alt_text](https://img.shields.io/badge/coverage-40%25-yellow)
+Clásico juego ruso de naipes, desarollado en Python con pygame. ![alt_text](https://img.shields.io/badge/approved-no-red) ![alt_text](https://img.shields.io/badge/build-stable-green) ![alt_text](https://img.shields.io/badge/coverage-55%25-yellow)
 
 # Integrantes
 - Anastasiia Fedorova  201873505-1  
