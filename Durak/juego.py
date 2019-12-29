@@ -151,7 +151,39 @@ class Juego(st.Estados_Juego):
                 self.listpos = int(canti / 3) - 1
         print("Posicion actual en lista de naipes de humano es: ", self.listpos)
 
-    def get_event(self, event, keys):
+    def get_event(self, event, keys, screen):
+
+        # Para los hovers/ clickeos sobre las CARTAS
+        # sobre carta 1
+
+        if self.u1.getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.u1.mouseOverButton(True, 340)
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print("Clickeando sobre CARTA1")
+                # hacer algo util con la carta po
+        else:
+            self.u1.mouseOverButton(False, 370)
+            pygame.display.update()
+
+        # sobre carta 2
+        if self.u2.getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.u2.mouseOverButton(True, 340)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print("Clickeando sobre CARTA2")
+        else:
+            self.u2.mouseOverButton(False, 370)
+
+        # sobre carta 3
+        if self.u3.getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.u3.mouseOverButton(True, 340)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print("Clickeando sobre CARTA3")
+                # mismo
+        else:
+            self.u3.mouseOverButton(False, 370)
 
         # Para solo clickeos sobre las FLECHAS (!!! quiza agregar movimiento con flechas de tecaldo?)
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -162,25 +194,6 @@ class Juego(st.Estados_Juego):
             if self.arrow_down.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.avanzarListPos(True)
                 self.manoVisible = self.jugadores[0].manoAcotada(self.listpos)
-
-        # Para los hovers/ clickeos sobre las CARTAS
-        # sobre carta 1
-        if self.u1.getRekt().collidepoint(pygame.mouse.get_pos()):
-            self.u1.mouseOverButton()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print("Clickeando sobre CARTA1")
-                # hacer algo util con la carta po
-        # sobre carta 2
-        if self.u2.getRekt().collidepoint(pygame.mouse.get_pos()):
-            self.u2.mouseOverButton()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print("Clickeando sobre CARTA2")
-        # sobre carta 3
-        if self.u3.getRekt().collidepoint(pygame.mouse.get_pos()):
-            self.u3.mouseOverButton()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print("Clickeando sobre CARTA3")
-                # mismo
 
         elif event.type == pygame.QUIT:
             self.quit = True
@@ -222,7 +235,6 @@ class Juego(st.Estados_Juego):
             "S", str(self.jugadores[0].mostrarCantidad()), self.white))
 
         while not self.st_done:
-
             #!!! como funcion
             carta1 = self.manoVisible[0].getImgNaipe(self.w, self.h)
             carta2 = self.manoVisible[1].getImgNaipe(self.w, self.h)
@@ -245,6 +257,7 @@ class Juego(st.Estados_Juego):
             self.mostrarTrump(screen)
 
             pygame.display.update()
+            screen.fill(self.background_color)
 
-            [self.get_event(event, pygame.key.get_pressed())
+            [self.get_event(event, pygame.key.get_pressed(), screen)
              for event in pygame.event.get()]
