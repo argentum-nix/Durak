@@ -1,6 +1,7 @@
 import random
 from naipe import Naipe
 from baraja import Baraja
+import sys_tools as st
 
 
 class Jugador(object):
@@ -43,7 +44,39 @@ class JugadorHumano(Jugador):
         del self.mano[indice]
         return carta
 
+    # rellena mano con NULLs si falta para ser divisible por 3
+    def rellenarMano(self):
+        # funcion propia de la rellanrMano, rellana con cartas vacias
+        # en funcion de multiplo de 3 mas cercano (y chico)
+        def closestDivisible(n, m):
+            quotient = int(n / m)
+            n1 = m * quotient
+            if (n * m) > 0:
+                n2 = m * (quotient + 1)
+            else:
+                n2 = m * (quotient - 1)
+            smallest = {True: n1, False: n2}[n1 <= n2]
+
+            if (n1 > n) & (n1 == smallest):
+                return n1
+            else:
+                return n2
+
+        print("El mas ceracno divisible a largo es",
+              closestDivisible(len(self.mano), 3))
+
+        if(len(self.mano) % 3 != 0):
+            length_mano = len(self.mano)
+            print("Largo inicial de la lista es ", length_mano)
+            closest = closestDivisible(len(self.mano), 3)
+            print("De hecho debo estar agregando cosas porque la dif es:",
+                  abs(length_mano - closest))
+            for i in range(abs(length_mano - closest)):
+                self.mano.append(Naipe("", ""))
+            print("Largo final de la mano es ", len(self.mano))
+
     def manoAcotada(self, mult):
+        self.rellenarMano()
         return self.mano[0 + (3 * mult): 3 + (3 * mult)]
 
 

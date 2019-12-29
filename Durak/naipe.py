@@ -36,8 +36,10 @@ class Naipe:
 
         elif self.calificacion == "Tréboles":
             return "T_{}.png".format(self.valor)
-        else:
+        elif self.calificacion == "Diamantes":
             return "D_{}.png".format(self.valor)
+        else:
+            return "NULL.png"
 
     def valorNaipe(self):
         return self.valor

@@ -82,7 +82,7 @@ class Juego(st.Estados_Juego):
         repartir = False
         for i in range(len(self.jugadores)):
             if self.baraja.mostrarCantidad() > 0:
-                if self.jugadores[i].mostrarCantidad() < 6:
+                if self.jugadores[i].mostrarCantidad() < 5:
                     repartir = True
                     self.jugadores[i].sacarCarta(self.baraja.sacarDeBaraja())
             else:
@@ -156,9 +156,10 @@ class Juego(st.Estados_Juego):
         # Para los hovers/ clickeos sobre las CARTAS
         # sobre carta 1
 
+        #agregar no reaccionar a las cartas nulas
         if self.u1.getRekt().collidepoint(pygame.mouse.get_pos()):
             self.u1.mouseOverButton(True, 340)
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("Clickeando sobre CARTA1")
                 # hacer algo util con la carta po
