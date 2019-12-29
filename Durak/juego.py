@@ -82,7 +82,7 @@ class Juego(st.Estados_Juego):
         repartir = False
         for i in range(len(self.jugadores)):
             if self.baraja.mostrarCantidad() > 0:
-                if self.jugadores[i].mostrarCantidad() < 5:
+                if self.jugadores[i].mostrarCantidad() < 6:
                     repartir = True
                     self.jugadores[i].sacarCarta(self.baraja.sacarDeBaraja())
             else:
