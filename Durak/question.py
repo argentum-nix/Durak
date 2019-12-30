@@ -24,6 +24,7 @@ class Question(st.Estados_Juego):
 
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
+                self.next = "MENU"
                 print("Eligio showtut ")
                 # self.next = "TUTORIAL"
 
