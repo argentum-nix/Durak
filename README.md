@@ -14,7 +14,7 @@ python3 main.py
 ```
 
 # Consideraciones
-La aplicación está basada en libreria externa pygame, la cuál, en caso de no tenerla, debe ser instalada antes de compilar el código.
+La aplicación está basada en libreria externa pygame, la cuál, en caso de no tenerla, debe ser instalada antes de ejecutar el código.
 
 Windows:
 ``` bash 
