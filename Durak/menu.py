@@ -28,7 +28,7 @@ class Menu(st.Estados_Juego):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.b1.collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
-                self.next = "JUEGO"
+                self.next = "QUESTION_BOX"
 
             elif self.b2.collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
