@@ -4,11 +4,13 @@ import text_tools as tt
 import intro
 import menu
 import juego
-import creditos
+import creditos 
+import question 
 
 from naipe import Naipe 
 from baraja import Baraja 
 from jugador import Jugador, JugadorHumano, JugadorCPU
+
 
 
 
@@ -27,6 +29,7 @@ class RunGame():
         self.state_dict = {
             "INTRO": intro.Intro(),
             "MENU" : menu.Menu(),
+            "QUESTION_BOX": question.Question(),
             #"TUTORIAL": tutorial.Tutorial()
             "JUEGO" : juego.Juego(6), # Se puede poner cualquier numero de jugadores
             "CREDITOS" :creditos.Creditos()
