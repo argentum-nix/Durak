@@ -162,10 +162,9 @@ class Juego(st.Estados_Juego):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("Clickeando sobre CARTA1")
-                # hacer algo util con la carta po
+                # hacer algo util con la carta 
         else:
             self.u1.mouseOverButton(False, 370)
-            pygame.display.update()
 
         # sobre carta 2
         if self.u2.getRekt().collidepoint(pygame.mouse.get_pos()):
