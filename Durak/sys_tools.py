@@ -23,11 +23,24 @@ def current_dir():
     return os.getcwd()
 
 
+def exists(file):
+    return os.path.exists(file)
+
+
+def write_txt(file, what):
+    with open(file, 'w') as f:
+        f.write(what)
+
+
+def delete_txt(file):
+    os.remove(file)
+
+
 class Estados_Juego:
     def __init__(self):
         self.background_color = (60, 179, 113)
         self.white = (255, 255, 255)
-        #IDEA: usar algo tipo map(lambda x: x/2, color) para generar la lista, pero es de a -30
+        # IDEA: usar algo tipo map(lambda x: x/2, color) para generar la lista, pero es de a -30
         self.white_to_bg_fade = [self.white, (238, 255, 255), (238, 255, 255), (178, 255, 221),
                                  (149, 255, 193), (120, 236, 165), (91, 207, 139), (60, 179, 113)]
 
