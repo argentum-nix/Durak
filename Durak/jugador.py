@@ -51,7 +51,7 @@ class JugadorHumano(Jugador):
         if boolAtaque == True:  # Toca atacar
 
             if len(listaCartasEnJuego) == 0:  # Significa que este es el primer ataque, todo vale
-                return self.mano
+                return self.mano 
 
             else:  # Significa que hay cartas en juego, solo se pueden jugar cartas de igual rank
                 ranks = []  # Almacena el valor numerico de las cartas en juego
