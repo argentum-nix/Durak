@@ -1,9 +1,12 @@
 from botonCarta import BotonCarta
+import pygame
+import sys_tools as st
+
 
 class Naipe:
-    def __init__(self, calificacion, valor): 
+    def __init__(self, calificacion, valor):
         self.calificacion = calificacion
-        self.valor = valor #Valor numérico, de 6 a 14.
+        self.valor = valor  # Valor numérico, de 6 a 14.
 
     def isTrump(self, trumpSuit):
         if self.calificacion == trumpSuit:
@@ -22,9 +25,9 @@ class Naipe:
             return "A de {}".format(self.calificacion)
         else:
             return "{} de {}".format(self.valor, self.calificacion)
-    
+
     def fileNaipe(self):
-        
+
         if self.calificacion == "Picas":
             return "P_{}.png".format(self.valor)
 
@@ -33,8 +36,10 @@ class Naipe:
 
         elif self.calificacion == "Tréboles":
             return "T_{}.png".format(self.valor)
-        else:
+        elif self.calificacion == "Diamantes":
             return "D_{}.png".format(self.valor)
+        else:
+            return "NULL.png"
 
     def valorNaipe(self):
         return self.valor
@@ -42,5 +47,10 @@ class Naipe:
     def calificacionNaipe(self):
         return self.calificacion
 
-
-
+        # retorna la imagen del naipe, para la lista
+   
+    def getImgNaipe(self, w, h):
+        imagen = pygame.image.load(
+            st.current_dir() + "/data/cards/{}".format(self.fileNaipe())).convert_alpha()
+        imagen = pygame.transform.scale(imagen, (w, h))
+        return imagen

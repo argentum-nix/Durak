@@ -3,29 +3,16 @@ import text_tools as tt
 
 import intro
 import menu
-# import juego
+import juego
+
 import creditos
+import question
 
-from naipe import Naipe 
-from baraja import Baraja 
+
+from naipe import Naipe
+from baraja import Baraja
 from jugador import Jugador, JugadorHumano, JugadorCPU
-from juego import Juego
 
-def menu_screen():
-    menu = True
-    print("Capte una clave, estoy en menu")
-    while menu:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        screen.fill(background_color)
-        S_text = tt.render_text(
-            "T", "lmao se supone que esto es el menu!", white)
-        screen.blit(S_text, (width / 2 - S_text.get_width() //
-                             2, height / 2 - S_text.get_height() // 2))
-        pygame.display.update()
- 
 
 class RunGame():
     def __init__(self):
@@ -33,19 +20,24 @@ class RunGame():
         pygame.init()
         self.screen_param = (800, 500)
         self.screen = pygame.display.set_mode(self.screen_param)
-        # Ventana creada 
-        
-        pygame.display.set_caption('Durak') # Escribe Durak en el borde de la ventana
+        # Ventana creada
+
+        # Escribe Durak en el borde de la ventana
+        pygame.display.set_caption('Durak')
         icon = pygame.image.load('data/icon/icon.png')
         pygame.display.set_icon(icon)
         self.clock = pygame.time.Clock()
         self.state_dict = {
             "INTRO": intro.Intro(),
-            "MENU" : menu.Menu(),
-            #"JUEGO" : juego.Juego(),
-            "JUEGO" : Juego(6), # Se puede poner cualquier numero de jugadores
-            "CREDITOS" :creditos.Creditos()
-            }
+
+            "MENU": menu.Menu(),
+
+            "QUESTION_BOX": question.Question(),
+            #"TUTORIAL": tutorial.Tutorial()
+            # Se puede poner cualquier numero de jugadores
+            "JUEGO": juego.Juego(6),
+            "CREDITOS": creditos.Creditos()
+        }
         # el estado actual (en que stage esta el juego)
         self.state_name = "INTRO"
         self.st_done = False
@@ -54,10 +46,6 @@ class RunGame():
         # tecla recibida
         self.key = pygame.key.get_pressed()
         print("Instancee excitosamente la clase RunGame de rungame.py")
-        # si recibe salida, termina
-        # si recibe cualquier accion,
-
-    #def Player(self):
 
     def game_loop(self):
         for event in pygame.event.get():
@@ -90,8 +78,7 @@ class RunGame():
             if self.state.quit:
                 self.st_done = True
                 pygame.display.quit()
-            # en caso de estar en el stage
-            # now = pygame.time.get_ticks()
+
             self.game_loop()
             self.cambiar_de_estado()
             #self.state.update(now, self.keys)

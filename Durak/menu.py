@@ -20,9 +20,6 @@ class Menu(st.Estados_Juego):
         jacket_button2 = pygame.transform.scale(jacket_button2, (160, 226))
 
         self.images = [jacket_button1, jacket_button2]
-        print("Estoy en clase Menu de modeulo menu.py")
-        # screen.fill(self.background_color)
-        # screen.blit(jacket_button1, (0, 0))
 
     def clean(self): 
         pass
@@ -31,7 +28,7 @@ class Menu(st.Estados_Juego):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.b1.collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
-                self.next = "JUEGO"
+                self.next = "QUESTION_BOX"
 
             elif self.b2.collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
