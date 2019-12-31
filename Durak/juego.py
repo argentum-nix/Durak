@@ -15,7 +15,7 @@ from botonCarta import BotonCarta
 
 class Juego(st.Estados_Juego):
     def __init__(self, nJugadores):
-
+ 
         st.Estados_Juego.__init__(self)
         self.nJugadores = nJugadores
         # Crea a los n jugadores (incluyendo al usuario como jugador 0) y los guarda en una lista
