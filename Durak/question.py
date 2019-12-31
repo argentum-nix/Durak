@@ -25,7 +25,8 @@ class Question(st.Estados_Juego):
 
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
-                self.next = "TUTORIAL"
+                #self.next = "TUTORIAL"
+                self.next = "MENU"
 
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
