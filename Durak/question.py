@@ -23,19 +23,19 @@ class Question(st.Estados_Juego):
     def skipCheck(self):
         try:
             with open("log.txt", 'r') as f:
-                print("entre en with,existe")
-            # ve si t: salto la cosa, f - muestro la question_box (dejo al decision al usuario)
+                # ve si t: salto la cosa, f - muestro la question_box (dejo al decision al usuario)
                 self.answer = (f.readlines()[0].split(":"))[1]
                 print("el answer es " + self.answer)
-                aux = ["f","t", True, False]
+                aux = ["f", "t", True, False]
                 # archivo roto, borramos.
                 if self.answer not in aux:
                     print("entre al delete con answer " + self.answer)
                     st.delete_txt("log.txt")
+                    # escribe un archivo de nuevo
+                    self.skipCheck()
                 else:
                     self.answer = {"f": False, "t": True}[self.answer]
         except OSError:
-            print("El archivo no existe")
             with open("log.txt", 'w') as f:
                 f.write("answer:f")
                 self.answer = False
@@ -47,11 +47,12 @@ class Question(st.Estados_Juego):
 
     def get_event(self, event, keys):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            #ya no quiero ver el tutorial, tengo que reescribir el archivo
+            # ya no quiero ver el tutorial, tengo que reescribir el archivo
             if self.skip.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
+                st.write_txt("log.txt", "answer:t")
                 self.next = "JUEGO"
-            #queremos ver el tutorial, no cambio nada en archivo, sigue en answer:f
+            # queremos ver el tutorial, no cambio nada en archivo, sigue en answer:f
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
                 #self.next = "TUTORIAL"
@@ -61,7 +62,8 @@ class Question(st.Estados_Juego):
         if not self.st_done:
             screen.fill(self.background_color)
             string = "Saltar el tutorial?"
-            screen.blit(self.fondo.getImg(),(self.fondo.getX(), self.fondo.getY()))
+            screen.blit(self.fondo.getImg(),
+                        (self.fondo.getX(), self.fondo.getY()))
             question_text = tt.render_text("S", string, self.white)
             screen.blit(question_text, (290, 200))
         while not self.st_done:
