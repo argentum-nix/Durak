@@ -1,4 +1,4 @@
-from botonCarta import BotonCarta
+#from botonCarta import BotonCarta
 import pygame
 import sys_tools as st
 
@@ -48,7 +48,6 @@ class Naipe:
         return self.calificacion
 
         # retorna la imagen del naipe, para la lista
-   
     def getImgNaipe(self, w, h):
         imagen = pygame.image.load(
             st.current_dir() + "/data/cards/{}".format(self.fileNaipe())).convert_alpha()
