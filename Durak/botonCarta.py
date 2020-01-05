@@ -1,6 +1,7 @@
 import pygame
 import sys_tools as st
-import text_tools as tt
+import text_tools as tt 
+from naipe import Naipe
 
 # recibe una img extra, "activa", si la imagen debe cambiar.
 # pensar en que jackets de los AI's se ponen azules al estar activos.
@@ -30,6 +31,8 @@ class BotonCarta():
         self.tall_aux = y
 
         self.enabled = enabled
+
+        self.name = nombre
 
 
     def mouseOverButton(self, mode, h):
@@ -69,3 +72,28 @@ class BotonCarta():
 
     def getY(self):
         return self.tall
+
+    def getNombre(self):
+        return self.name
+
+    def makeNaipe(self):
+        # Se usa para crear un naipe, el cual sera retornado cuando el usuario haga click 
+        # en la carta que quiere jugar
+        if self.name == "NULL.png":
+            return Naipe("Null", 0)
+        if self.name[0] == "C":
+            calificacion = "Corazones"
+        elif self.name[0] == "D":
+            calificacion = "Diamantes"
+        elif self.name[0] == "P":
+            calificacion = "Picas"
+        else:
+            calificacion = "Tréboles"
+        
+        if len(self.name) == 7:
+            rank = self.name[2]
+        else:
+            rank = "{}{}".format(self.name[2], self.name[3])
+
+        return Naipe(calificacion, int(rank))
+

@@ -2,6 +2,7 @@ import random
 from naipe import Naipe
 from baraja import Baraja
 import sys_tools as st
+import operator
 
 
 class Jugador(object):
@@ -23,6 +24,9 @@ class Jugador(object):
     def mostrarMano(self):
         pass
 
+    def getLowerTrump(self):
+        pass
+
 
 class JugadorHumano(Jugador):
     def __init__(self):
@@ -34,15 +38,51 @@ class JugadorHumano(Jugador):
         self.mano.append(nuevaCarta)
 
     def mostrarMano(self):
-        [carta.printNaipe() for carta in self.mano]
+        return [carta.printNaipe() for carta in self.mano]
 
     def mostrarCantidad(self):
         return len(self.mano)
 
-    def jugarCarta(self, indice):
-        carta = self.mano[indice]
-        del self.mano[indice]
-        return carta
+    def posiblesCartas(self, listaCartasEnJuego, trump, boolAtaque):
+        posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
+        if boolAtaque == True:  # Toca atacar
+
+            # Significa que este es el primer ataque, todo vale
+            if (len(listaCartasEnJuego["defensa"]) == 0) and (len(listaCartasEnJuego["ataque"]) == 0):
+                return self.mano
+
+            else:  # Significa que hay cartas en juego, solo se pueden jugar cartas de igual rank
+                ranks = []  # Almacena el valor numerico de las cartas en juego
+
+                for carta in listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]:
+                    if int(carta.valorNaipe()) not in ranks:
+                        # Agrega el valor del naipe de las cartas en juego a la lista ranks
+                        ranks.append(int(carta.valorNaipe()))
+
+                for carta in self.mano:
+                    if carta.valorNaipe() != '' and int(carta.valorNaipe()) in ranks:
+                        posiblesCartas.append(carta)
+
+        else:  # Toca defender, solo se puede jugar cartas de igual o mayor rank e igual calificacion o cualquier trump
+            # Ultima carta jugada/Carta del atacante al defensor.
+            lastCard = listaCartasEnJuego["ataque"][-1]
+
+            for carta in self.mano:
+                if carta.valorNaipe() != '' and (int(carta.valorNaipe()) >= int(lastCard.valorNaipe()) and carta.calificacionNaipe == lastCard.calificacionNaipe) or carta.isTrump(trump):
+                    posiblesCartas.append(carta)
+
+        return posiblesCartas
+
+    def jugarCarta(self, carta):
+        if carta != "pass":
+            del self.mano[self.mano.index(carta)]
+
+    def getLowerTrump(self, trump):
+        lower = 15
+        for naipe in self.mano:
+            if naipe.isTrump(trump) and int(naipe.valorNaipe()) < lower:
+                lower = naipe.valorNaipe()
+        return lower
 
     # rellena mano con NULLs si falta para ser divisible por 3
     def rellenarMano(self):
@@ -62,22 +102,22 @@ class JugadorHumano(Jugador):
             else:
                 return n2
 
-        print("El mas ceracno divisible a largo es",
-              closestDivisible(len(self.mano), 3))
-
         if(len(self.mano) % 3 != 0):
             length_mano = len(self.mano)
-            print("Largo inicial de la lista es ", length_mano)
             closest = closestDivisible(len(self.mano), 3)
-            print("De hecho debo estar agregando cosas porque la dif es:",
-                  abs(length_mano - closest))
             for i in range(abs(length_mano - closest)):
                 self.mano.append(Naipe("", ""))
-            print("Largo final de la mano es ", len(self.mano))
+
+    def rellenar(self):
+        relleno = []
+        if self.mostrarCantidad() == 0:
+            return [Naipe("Null", 0), Naipe("Null", 0), Naipe("Null", 0)]
+        while((len(relleno) + len(self.mano)) % 3 != 0):
+            relleno.append(Naipe("Null", 0))
+        return relleno
 
     def manoAcotada(self, mult):
-        self.rellenarMano()
-        return self.mano[0 + (3 * mult): 3 + (3 * mult)]
+        return (self.mano + self.rellenar())[0 + (3 * mult): 3 + (3 * mult)]
 
 
 class JugadorCPU(Jugador):
@@ -92,6 +132,14 @@ class JugadorCPU(Jugador):
 
     def sacarCarta(self, nuevaCarta):
         self.mano[nuevaCarta.calificacionNaipe()].append(nuevaCarta)
+        self.mano[nuevaCarta.calificacionNaipe()] = sorted(
+            self.mano[nuevaCarta.calificacionNaipe()], key=lambda x: x.valorNaipe())
+
+    def getLowerTrump(self, trump):
+        if len(self.mano[trump.calificacionNaipe()]) > 0:
+            return self.mano[trump.calificacionNaipe()][0].valorNaipe()
+        else:
+            return 15
 
     # Retorna una lista con las cartas solicitadas
     def buscarCartas(self, valor, trump="pass", calificacion="pass"):
@@ -99,32 +147,30 @@ class JugadorCPU(Jugador):
         if calificacion == "pass":  # Significa que esta atacando y solo necesita cartas con el mismo numero ingresado en valor o que necesita la lista de cartas trump
             if trump == "pass":  # Significa que quiere cartas para atacar solamente.
 
-                for calif in mano.keys():  # Busca las cartas con el mismo valor numerico
-                    for carta in mano[calif]:
+                for calif in self.mano.keys():  # Busca las cartas con el mismo valor numerico
+                    for carta in self.mano[calif]:
                         if carta.valorNaipe() == valor:
                             cartasEncontradas.append(carta)
 
             else:  # Significa que quiere las cartas trump
-                cartasEncontradas = mano[trump]
+                cartasEncontradas = self.mano[trump.calificacionNaipe()]
 
         else:  # Significa que está defendiendo y necesita la calificación para buscar cartas con la misma pinta e igual o mayor valor numerico, además de las cartas trump
 
-            for carta in mano[calificacion]:
+            for carta in self.mano[calificacion]:
                 if carta.valorNaipe() >= valor:
                     cartasEncontradas.append(carta)
 
-            if calificacion != trump:
-                cartasEncontradas = cartasEncontradas + mano[trump]
+            if calificacion != trump.calificacionNaipe():
+                cartasEncontradas = cartasEncontradas + \
+                    self.mano[trump.calificacionNaipe()]
 
-        if len(cartasEncontradas) == 0:
-            return "pass"
-        else:
-            return cartasEncontradas
-        pass
+        return cartasEncontradas
 
     def jugarCarta(self, listaCartasEnJuego, trump, boolAtaque):
-        chance = random.choice(["jugar"] + ["pass"])
-
+        # Si se quiere agregar la opcion de pasar un turno:
+        #chance = random.choice(["jugar"] + ["pass"])
+        chance = "jugar"
         # Decide de manera random si jugar (atacar/defender) o pasar el turno
         if chance == "pass":
             return chance
@@ -133,34 +179,35 @@ class JugadorCPU(Jugador):
             posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
             if boolAtaque == True:  # Toca atacar
 
-                if len(listaCartasEnJuego) == 0:  # Significa que este es el primer ataque
+                # Significa que este es el primer ataque
+                if len(listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]) == 0:
                     calif = []
-
-                    for calificacion in mano.keys():
-                        if len(mano[calificacion]) != 0:
-                            # Agrega todas las calificaciones que poseen cartas para evitar que el random tome una calificacion vacia
+                    for calificacion in self.mano.keys():
+                        if len(self.mano[calificacion]) != 0:
+                            # Agrega todas las calificaciones que poseen cartas para evitar que el random tome una pinta vacia
                             calif.append(calificacion)
 
                     # La cpu jugara una carta de la pinta calif
                     calif = random.choice(calif)
-                    cartaAJugar = random.choice(mano[calif])
+                    cartaAJugar = random.choice(self.mano[calif])
+                    return cartaAJugar
 
                 else:  # Significa que hay cartas en juego
                     ranks = []  # Almacena el valor numerico de las cartas en juego
                     cartaAJugar = "pass"
 
-                    for carta in listaCartasEnJuego:
+                    for carta in listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]:
                         if carta.valorNaipe() not in ranks:
                             # Agrega el valor del naipe de las cartas en juego a la lista ranks
                             ranks.append(carta.valorNaipe())
 
                     for rank in ranks:
-                        posiblesCartas += buscarCartas(rank)
+                        posiblesCartas += self.buscarCartas(rank)
 
             else:  # Toca defender
                 # Ultima carta jugada/Carta del atacante al defensor.
-                lastCard = listaCartasEnJuego[-1]
-                posiblesCartas = buscarCartas(
+                lastCard = listaCartasEnJuego["ataque"][-1]
+                posiblesCartas = self.buscarCartas(
                     lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
 
             # Si no se encontro ninguna carta para jugar, pasara el turno.
@@ -170,7 +217,7 @@ class JugadorCPU(Jugador):
             # Elige una carta al azar de entre todas las posibles cartas que se pueden jugar
             cartaAJugar = random.choice(posiblesCartas)
             # cartaAJugar almacena la carta que se va a jugar, tanto para ataque como para defensa, ahora sigue eliminarla de la mano y retornarla
-            mano[cartaAJugar.calificacionNaipe()].remove(cartaAJugar)
+            self.mano[cartaAJugar.calificacionNaipe()].remove(cartaAJugar)
 
             return cartaAJugar
 

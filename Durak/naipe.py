@@ -1,4 +1,4 @@
-from botonCarta import BotonCarta
+#from botonCarta import BotonCarta
 import pygame
 import sys_tools as st
 
