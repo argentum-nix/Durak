@@ -10,7 +10,7 @@ class Jugador(object):
         self.esHumano = ""
 
     def isHuman(self):
-        return self.esHumano 
+        return self.esHumano
 
     def sacarCarta(self, nuevaCarta):
         pass
@@ -24,10 +24,8 @@ class Jugador(object):
     def mostrarMano(self):
         pass
 
-
     def getLowerTrump(self):
         pass
-
 
 
 class JugadorHumano(Jugador):
@@ -49,7 +47,8 @@ class JugadorHumano(Jugador):
         posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
         if boolAtaque == True:  # Toca atacar
 
-            if (len(listaCartasEnJuego["defensa"]) == 0) and (len(listaCartasEnJuego["ataque"]) == 0):  # Significa que este es el primer ataque, todo vale
+            # Significa que este es el primer ataque, todo vale
+            if (len(listaCartasEnJuego["defensa"]) == 0) and (len(listaCartasEnJuego["ataque"]) == 0):
                 return self.mano
 
             else:  # Significa que hay cartas en juego, solo se pueden jugar cartas de igual rank
@@ -71,7 +70,6 @@ class JugadorHumano(Jugador):
             for carta in self.mano:
                 if carta.valorNaipe() != '' and (int(carta.valorNaipe()) >= int(lastCard.valorNaipe()) and carta.calificacionNaipe == lastCard.calificacionNaipe) or carta.isTrump(trump):
                     posiblesCartas.append(carta)
-                
 
         return posiblesCartas
 
@@ -104,18 +102,11 @@ class JugadorHumano(Jugador):
             else:
                 return n2
 
-        print("El mas ceracno divisible a largo es",
-              closestDivisible(len(self.mano), 3))
-
         if(len(self.mano) % 3 != 0):
             length_mano = len(self.mano)
-            print("Largo inicial de la lista es ", length_mano)
             closest = closestDivisible(len(self.mano), 3)
-            print("De hecho debo estar agregando cosas porque la dif es:",
-                  abs(length_mano - closest))
             for i in range(abs(length_mano - closest)):
                 self.mano.append(Naipe("", ""))
-            print("Largo final de la mano es ", len(self.mano))
 
     def rellenar(self):
         relleno = []
@@ -141,7 +132,8 @@ class JugadorCPU(Jugador):
 
     def sacarCarta(self, nuevaCarta):
         self.mano[nuevaCarta.calificacionNaipe()].append(nuevaCarta)
-        self.mano[nuevaCarta.calificacionNaipe()] = sorted(self.mano[nuevaCarta.calificacionNaipe()], key = lambda x: x.valorNaipe())
+        self.mano[nuevaCarta.calificacionNaipe()] = sorted(
+            self.mano[nuevaCarta.calificacionNaipe()], key = lambda x: x.valorNaipe())
 
     def getLowerTrump(self, trump):
         if len(self.mano[trump.calificacionNaipe()]) > 0:
@@ -149,21 +141,19 @@ class JugadorCPU(Jugador):
         else:
             return 15
 
+
     # Retorna una lista con las cartas solicitadas
     def buscarCartas(self, valor, trump="pass", calificacion="pass"):
         cartasEncontradas = []
         if calificacion == "pass":  # Significa que esta atacando y solo necesita cartas con el mismo numero ingresado en valor o que necesita la lista de cartas trump
             if trump == "pass":  # Significa que quiere cartas para atacar solamente.
 
-
                 for calif in self.mano.keys():  # Busca las cartas con el mismo valor numerico
                     for carta in self.mano[calif]:
-
                         if carta.valorNaipe() == valor:
                             cartasEncontradas.append(carta)
 
             else:  # Significa que quiere las cartas trump
-
                 cartasEncontradas = self.mano[trump.calificacionNaipe()]
 
         else:  # Significa que está defendiendo y necesita la calificación para buscar cartas con la misma pinta e igual o mayor valor numerico, además de las cartas trump
@@ -173,16 +163,15 @@ class JugadorCPU(Jugador):
                     cartasEncontradas.append(carta)
 
             if calificacion != trump.calificacionNaipe():
-                cartasEncontradas = cartasEncontradas + self.mano[trump.calificacionNaipe()]
+                cartasEncontradas = cartasEncontradas + \
+                    self.mano[trump.calificacionNaipe()]
 
         return cartasEncontradas
 
-
     def jugarCarta(self, listaCartasEnJuego, trump, boolAtaque):
-        #Si se quiere agregar la opcion de pasar un turno: 
+        # Si se quiere agregar la opcion de pasar un turno:
         #chance = random.choice(["jugar"] + ["pass"])
         chance = "jugar"
-
         # Decide de manera random si jugar (atacar/defender) o pasar el turno
         if chance == "pass":
             return chance
@@ -191,19 +180,18 @@ class JugadorCPU(Jugador):
             posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
             if boolAtaque == True:  # Toca atacar
 
-
-                if len(listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]) == 0:  # Significa que este es el primer ataque
+                # Significa que este es el primer ataque
+                if len(listaCartasEnJuego["defensa"]) + len(listaCartasEnJuego["ataque"]) == 0:
                     calif = []
                     for calificacion in self.mano.keys():
                         if len(self.mano[calificacion]) != 0:
                             # Agrega todas las calificaciones que poseen cartas para evitar que el random tome una pinta vacia
-
                             calif.append(calificacion)
 
                     # La cpu jugara una carta de la pinta calif
                     calif = random.choice(calif)
-
                     cartaAJugar = random.choice(self.mano[calif])
+                    self.mano[cartaAJugar.calificacionNaipe()].remove(cartaAJugar)
                     return cartaAJugar
 
                 else:  # Significa que hay cartas en juego
@@ -216,14 +204,13 @@ class JugadorCPU(Jugador):
                             ranks.append(carta.valorNaipe())
 
                     for rank in ranks:
-
                         posiblesCartas += self.buscarCartas(rank)
 
             else:  # Toca defender
                 # Ultima carta jugada/Carta del atacante al defensor.
                 lastCard = listaCartasEnJuego["ataque"][-1]
-                posiblesCartas = self.buscarCartas(lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
-
+                posiblesCartas = self.buscarCartas(
+                    lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
 
             # Si no se encontro ninguna carta para jugar, pasara el turno.
             if len(posiblesCartas) == 0:
