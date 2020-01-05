@@ -4,8 +4,12 @@ import text_tools as tt
 import intro
 import menu
 import juego
+
+
 import creditos
 import question
+
+
 
 from naipe import Naipe
 from baraja import Baraja
