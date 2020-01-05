@@ -133,13 +133,14 @@ class JugadorCPU(Jugador):
     def sacarCarta(self, nuevaCarta):
         self.mano[nuevaCarta.calificacionNaipe()].append(nuevaCarta)
         self.mano[nuevaCarta.calificacionNaipe()] = sorted(
-            self.mano[nuevaCarta.calificacionNaipe()], key=lambda x: x.valorNaipe())
+            self.mano[nuevaCarta.calificacionNaipe()], key = lambda x: x.valorNaipe())
 
     def getLowerTrump(self, trump):
         if len(self.mano[trump.calificacionNaipe()]) > 0:
             return self.mano[trump.calificacionNaipe()][0].valorNaipe()
         else:
             return 15
+
 
     # Retorna una lista con las cartas solicitadas
     def buscarCartas(self, valor, trump="pass", calificacion="pass"):
@@ -180,7 +181,7 @@ class JugadorCPU(Jugador):
             if boolAtaque == True:  # Toca atacar
 
                 # Significa que este es el primer ataque
-                if len(listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]) == 0:
+                if len(listaCartasEnJuego["defensa"]) + len(listaCartasEnJuego["ataque"]) == 0:
                     calif = []
                     for calificacion in self.mano.keys():
                         if len(self.mano[calificacion]) != 0:
