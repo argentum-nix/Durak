@@ -8,7 +8,7 @@ from botonCarta import BotonCarta
 class Question(st.Estados_Juego):
     def __init__(self):
         print("Instancee exitosamente clase Question")
-
+        st.Estados_Juego.__init__(self)
         self.skipCheck()
         # si el answer es falso, queremos ver el tutorial
         # si es true, quierp salir inmediatamente
@@ -81,5 +81,7 @@ class Question(st.Estados_Juego):
                         (self.show_tut.getX(), self.show_tut.getY()))
             [self.get_event(event, pygame.key.get_pressed())
 
+
              for event in pygame.event.get()]
+
 

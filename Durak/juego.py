@@ -19,6 +19,7 @@ class Juego(st.Estados_Juego):
         st.Estados_Juego.__init__(self)
         self.nJugadores = nJugadores
         # Crea a los n jugadores (incluyendo al usuario como jugador 0) y los guarda en una lista
+
         self.jugadores = []
         self.next = "MENU"
         self.st_done = False
@@ -49,10 +50,12 @@ class Juego(st.Estados_Juego):
         self.durak = -1 # Indice del player que termina siendo durak, -1 si la partida termina en draw
         self.gameFinished = False # Bool que determina si la partida sigue o termina
 
+
         # u1, u2 y u3 son las 3 cartas visibles del usuario
 
         # Retorna una lista con 3 o menos elementos de la mano del jugador (funciona con slicing), son clase Naipe
         self.listpos = 0
+
         self.manoVisible = []
 
         # Lista con el nombre de los archivos de las imagenes correspondientes para cada carta en manoVisible
@@ -86,6 +89,7 @@ class Juego(st.Estados_Juego):
         list_buttons = lista(map(lambda i: BotonCarta(x,y,w,h,self.manoVisible[i].fileNaipe()),[i for i in range(2)]))
     '''
 
+
     def crearJugadores(self, nJugadores):
         jugadores = [JugadorCPU() for id in range(1, nJugadores)]
         jugadores.append(JugadorHumano())
@@ -100,10 +104,13 @@ class Juego(st.Estados_Juego):
         repartir = False
         for i in range(len(jugadores)):
             pygame
+
             if self.baraja.mostrarCantidad() > 0:
                 if jugadores[i].mostrarCantidad() < 6:
                     repartir = True
+
                     self.jugadores[self.jugadores.index(jugadores[i])].sacarCarta(self.baraja.sacarDeBaraja())
+
 
             else:
                 repartir = False
@@ -111,11 +118,14 @@ class Juego(st.Estados_Juego):
         if repartir == True:
             self.repartirCartas(atacantes, screen)
 
+
     def makeTrump(self):
+
         if self.nJugadores >= 6:  # Si son 6 jugadores, no quedaran cartas en la baraja despues de repartir
             return self.baraja.sacarTrumpCon6Jugadores()
         else:
             return self.baraja.sacarTrump()
+
     
     def getDefensor(self, defensa = -1):
         if defensa == -1: # valor al inicio del juego
@@ -236,6 +246,14 @@ class Juego(st.Estados_Juego):
                     self.refreshUI(screen)
                 else:
                     self.actualizarMano(self.defensor, screen)
+
+
+    
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print("Clickeando sobre CARTA2")
+        else:
+            self.u2.mouseOverButton(False, 370)
 
 
             else:
@@ -424,6 +442,7 @@ class Juego(st.Estados_Juego):
             print ("Gracias por jugar")
             x = input()
 
+
         # Para solo clickeos sobre las FLECHAS (!!! quiza agregar movimiento con flechas de tecaldo?)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.arrow_up.getRekt().collidepoint(pygame.mouse.get_pos()):
@@ -434,14 +453,15 @@ class Juego(st.Estados_Juego):
                 self.avanzarListPos(True)
                 self.manoVisible = self.jugadores[0].manoAcotada(self.listpos)
 
+
             self.refreshUI(screen)
+
 
         elif event.type == pygame.QUIT:
             self.quit = True
             pygame.quit()
             quit()
 
-        
     def mostrarTrump(self, screen):
         trumpImg = self.t1.getImg()
         trump_text = tt.render_text(
@@ -538,6 +558,7 @@ class Juego(st.Estados_Juego):
             carta3 = self.manoVisible[2].getImgNaipe(self.w, self.h) """
             carta1, carta2, carta3 = [carta.getImgNaipe(self.w, self.h) for carta in self.manoVisible[:3]]
 
+
             # Dibuja las manos de los jugadores
             #!!!limpiaaaar con funcion, hasta se puede hacer una sola lamda con carta1-3
             screen.blit(carta1, (self.u1.getX(), self.u1.getY()))
@@ -556,7 +577,7 @@ class Juego(st.Estados_Juego):
 
             pygame.display.update()
 
+
             screen.fill(self.background_color)
 
             [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]
-            

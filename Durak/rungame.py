@@ -5,8 +5,10 @@ import intro
 import menu
 import juego
 
+
 import creditos
 import question
+
 
 
 from naipe import Naipe
@@ -29,9 +31,7 @@ class RunGame():
         self.clock = pygame.time.Clock()
         self.state_dict = {
             "INTRO": intro.Intro(),
-
             "MENU": menu.Menu(),
-
             "QUESTION_BOX": question.Question(),
             #"TUTORIAL": tutorial.Tutorial()
             # Se puede poner cualquier numero de jugadores

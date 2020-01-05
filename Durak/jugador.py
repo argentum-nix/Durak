@@ -4,6 +4,7 @@ from baraja import Baraja
 import sys_tools as st
 import operator
 
+
 class Jugador(object):
     def __init__(self):
         self.esHumano = ""
@@ -22,6 +23,7 @@ class Jugador(object):
 
     def mostrarMano(self):
         pass
+
 
     def getLowerTrump(self):
         pass
@@ -153,12 +155,15 @@ class JugadorCPU(Jugador):
         if calificacion == "pass":  # Significa que esta atacando y solo necesita cartas con el mismo numero ingresado en valor o que necesita la lista de cartas trump
             if trump == "pass":  # Significa que quiere cartas para atacar solamente.
 
+
                 for calif in self.mano.keys():  # Busca las cartas con el mismo valor numerico
                     for carta in self.mano[calif]:
+
                         if carta.valorNaipe() == valor:
                             cartasEncontradas.append(carta)
 
             else:  # Significa que quiere las cartas trump
+
                 cartasEncontradas = self.mano[trump.calificacionNaipe()]
 
         else:  # Significa que está defendiendo y necesita la calificación para buscar cartas con la misma pinta e igual o mayor valor numerico, además de las cartas trump
@@ -172,10 +177,12 @@ class JugadorCPU(Jugador):
 
         return cartasEncontradas
 
+
     def jugarCarta(self, listaCartasEnJuego, trump, boolAtaque):
         #Si se quiere agregar la opcion de pasar un turno: 
         #chance = random.choice(["jugar"] + ["pass"])
         chance = "jugar"
+
         # Decide de manera random si jugar (atacar/defender) o pasar el turno
         if chance == "pass":
             return chance
@@ -184,15 +191,18 @@ class JugadorCPU(Jugador):
             posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
             if boolAtaque == True:  # Toca atacar
 
+
                 if len(listaCartasEnJuego["defensa"] + listaCartasEnJuego["ataque"]) == 0:  # Significa que este es el primer ataque
                     calif = []
                     for calificacion in self.mano.keys():
                         if len(self.mano[calificacion]) != 0:
                             # Agrega todas las calificaciones que poseen cartas para evitar que el random tome una pinta vacia
+
                             calif.append(calificacion)
 
                     # La cpu jugara una carta de la pinta calif
                     calif = random.choice(calif)
+
                     cartaAJugar = random.choice(self.mano[calif])
                     return cartaAJugar
 
@@ -206,12 +216,14 @@ class JugadorCPU(Jugador):
                             ranks.append(carta.valorNaipe())
 
                     for rank in ranks:
+
                         posiblesCartas += self.buscarCartas(rank)
 
             else:  # Toca defender
                 # Ultima carta jugada/Carta del atacante al defensor.
                 lastCard = listaCartasEnJuego["ataque"][-1]
                 posiblesCartas = self.buscarCartas(lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
+
 
             # Si no se encontro ninguna carta para jugar, pasara el turno.
             if len(posiblesCartas) == 0:
@@ -228,4 +240,3 @@ class JugadorCPU(Jugador):
         for listaDeCartas in self.mano.values():
             for carta in listaDeCartas:
                 carta.printNaipe()
-
