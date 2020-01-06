@@ -63,12 +63,16 @@ class JugadorHumano(Jugador):
                     if carta.valorNaipe() != '' and int(carta.valorNaipe()) in ranks:
                         posiblesCartas.append(carta)
 
+
         else:  # Toca defender, solo se puede jugara cartas de igual o mayor rank e igual calificacion o cualquier trump
+
             # Ultima carta jugada/Carta del atacante al defensor.
             lastCard = listaCartasEnJuego["ataque"][-1]
 
             for carta in self.mano:
+
                 if carta.valorNaipe() != '' and (int(carta.valorNaipe()) >= int(lastCard.valorNaipe()) and carta.calificacionNaipe == lastCard.calificacionNaipe) or carta.isTrump(trump.calificacionNaipe()):
+
                     posiblesCartas.append(carta)
 
         return posiblesCartas
@@ -191,8 +195,9 @@ class JugadorCPU(Jugador):
                     # La cpu jugara una carta de la pinta calif
                     calif = random.choice(calif)
                     cartaAJugar = random.choice(self.mano[calif])
+
                     self.mano[cartaAJugar.calificacionNaipe()].remove(cartaAJugar)
-                    return cartaAJugar
+      return cartaAJugar
 
                 else:  # Significa que hay cartas en juego
                     ranks = []  # Almacena el valor numerico de las cartas en juego
