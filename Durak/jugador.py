@@ -63,12 +63,12 @@ class JugadorHumano(Jugador):
                     if carta.valorNaipe() != '' and int(carta.valorNaipe()) in ranks:
                         posiblesCartas.append(carta)
 
-        else:  # Toca defender, solo se puede jugar cartas de igual o mayor rank e igual calificacion o cualquier trump
+        else:  # Toca defender, solo se puede jugara cartas de igual o mayor rank e igual calificacion o cualquier trump
             # Ultima carta jugada/Carta del atacante al defensor.
             lastCard = listaCartasEnJuego["ataque"][-1]
 
             for carta in self.mano:
-                if carta.valorNaipe() != '' and (int(carta.valorNaipe()) >= int(lastCard.valorNaipe()) and carta.calificacionNaipe == lastCard.calificacionNaipe) or carta.isTrump(trump):
+                if carta.valorNaipe() != '' and (int(carta.valorNaipe()) >= int(lastCard.valorNaipe()) and carta.calificacionNaipe == lastCard.calificacionNaipe) or carta.isTrump(trump.calificacionNaipe()):
                     posiblesCartas.append(carta)
 
         return posiblesCartas
