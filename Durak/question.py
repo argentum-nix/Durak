@@ -81,7 +81,5 @@ class Question(st.Estados_Juego):
                         (self.show_tut.getX(), self.show_tut.getY()))
             [self.get_event(event, pygame.key.get_pressed())
 
-
              for event in pygame.event.get()]
-
 
