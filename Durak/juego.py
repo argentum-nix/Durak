@@ -213,7 +213,7 @@ class Juego(st.Estados_Juego):
         return self.durak
 
     def play(self, posicion, screen, carta = "pass"):
-        pos_zona = [(230,180), (300,180), (370, 180), (440, 180), (510, 200), (580,180)]
+        pos_zona = [(230,180), (300,180), (370, 180), (440, 180), (510, 200), (520,180)]
         pos_zona_desfase = [(240,220),(310,220),(380, 220),(450, 220),(520, 220),(590,220)]
         # Maneja la continuidad de los turnos
         if posicion == self.atacante and len(self.passers) > 0:
@@ -434,19 +434,23 @@ class Juego(st.Estados_Juego):
         # Si esque el humano no tiene cartas validas para jugar
         if (self.atacante == 0 and self.boolAtq == True) or ((self.defensor == 0 and self.boolAtq == False) and self.boolDfs == True) and self.checkGame() != True:
             
-            if len(self.cartasPosibles()) == 0: 
-                if self.defensor == 0:
+            if self.defensor == 0:
+                if len(self.cartasPosibles()) == 0: 
                     self.tomar.isActivePlayer(True)
+                    print("El jugador 0 es un defensor, y no tiene cartas para defenderse")
                     if self.tomar.getRekt().collidepoint(pygame.mouse.get_pos()):
                       if event.type == pygame.MOUSEBUTTONDOWN:
                             self.tomar.isActivePlayer(False)
+                            print("El jugador 0 es un defensor, y se lleva todas las cartas :(")
                             self.play(0, screen, "pass")
-                elif self.atacante == 0:
-                    self.pasar.isActivePlayer(True)
-                    if self.pasar.getRekt().collidepoint(pygame.mouse.get_pos()):
-                      if event.type == pygame.MOUSEBUTTONDOWN:
-                            self.pasar.isActivePlayer(False)
-                            self.play(0, screen, "pass")
+            elif self.atacante == 0:
+                self.pasar.isActivePlayer(True)
+                print("El jugador 0 es un atacante, y puede no atacar")
+                if self.pasar.getRekt().collidepoint(pygame.mouse.get_pos()):
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print("El jugador 0 es un atacante, y decide no atacar")
+                        self.pasar.isActivePlayer(False)
+                        self.play(0, screen, "pass")
                             
 
         if  self.checkGame() == True:
