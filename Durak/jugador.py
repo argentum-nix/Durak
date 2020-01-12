@@ -74,7 +74,6 @@ class JugadorHumano(Jugador):
                     elif carta.isTrump(trump.calificacionNaipe()):
                         posiblesCartas.append(carta)
 
-
         return posiblesCartas
 
     def jugarCarta(self, carta):

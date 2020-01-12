@@ -86,6 +86,7 @@ class Juego(st.Estados_Juego):
         self.sound = BotonCarta(720,400,30,30,"sound_blue.png","sound_gray.png",True)
         self.music = BotonCarta(720,440,30,30,"music_blue.png","music_gray.png",True)
 
+
         #!!!Rehacer la lambda una vez que tenga internet, para tener lista y no variables soltadas
     '''
     def crearListButtons(self):
@@ -146,30 +147,34 @@ class Juego(st.Estados_Juego):
             self.getDefensor(self.defensor)
         self.boolDfs = True
 
-    def actualizarTurno(self):
+    def actualizarTurno(self, lastTurn = -1):
         self.atacante_count = 0 
         self.defensor_count = 0
-        if self.turno == (len(self.jugadores) - 1):
-            self.turno = 0
-        else:
-            self.turno += 1
+
+        if lastTurn == -1:
+            self.turno = int(self.defensor)
+            if len(self.cartasJugadas["ataque"]) != len(self.cartasJugadas["defensa"]):
+                self.actualizarTurno(self.turno)
         
-        if self.turno == self.defensor and self.boolDfs == False:
-            self.actualizarTurno() # Si no pudo defender pierde el turno
-            return
+        else:
+            if lastTurn == (len(self.jugadores) - 1):
+                self.turno = 0
+            else:
+                self.turno = lastTurn + 1
+
 
         if self.jugadores[self.turno].mostrarCantidad() == 0: # Los jugadores sin cartas en la mano no juegan
-            self.actualizarTurno()
-            return
-        else:
-            self.getDefensor()
-            self.atacante = self.turno
-            self.boolAtq = True
-            self.boolDfs = True
-            print("El atacante inicial es el jugador " + str(self.atacante) + " y el defensor de esta ronda es " + str(self.defensor))
+            self.actualizarTurno(self.turno)
+
+        if self.atacante == 0:
+            print("El jugador 0 es un atacante:")
+            cartasPosibles = self.cartasPosibles()
+            print("Las cartas que puedes jugar son:")
+            print([carta.printNaipe() for carta in cartasPosibles])
+            print("Si no tienes cartas o no quieres jugar este turno, presiona el botón 'PASAR':")
+
+            
     
-
-
     def nextAtaquer(self):
         if self.atacante == (len(self.jugadores) - 1):
             self.atacante = 0
@@ -191,11 +196,17 @@ class Juego(st.Estados_Juego):
     def makeFirstPlayer(self):
         trumps = [jugador.getLowerTrump(self.trump) for jugador in self.jugadores] # lista con los menores trump de los jugadores
         self.turno = trumps.index(min(trumps))
-        self.atacante = self.turno
+        self.atacante = int(self.turno)
         self.boolAtq = True
         self.getDefensor()
         print("El primer jugador es " + str(self.atacante) + " y el defensor de esta ronda es " + str(self.defensor))
-    
+        if self.atacante == 0:
+            print("El jugador 0 es un atacante:")
+            cartasPosibles = self.cartasPosibles()
+            print("Las cartas que puedes jugar son:")
+            print([carta.printNaipe() for carta in cartasPosibles])
+            print("Si no tienes cartas o no quieres jugar este turno, presiona el botón 'PASAR':")
+        
 
     def changeActive(self):
         if self.boolAtq == True and self.boolDfs == True: # Si boolDfs es falso, el defensor no tiene para defender por lo tanto no tendra mas turnos
@@ -211,14 +222,15 @@ class Juego(st.Estados_Juego):
                 if cantNaipes[i] != 0:
                     self.durak = i # Asigna el indice del durak
     
-
-
         elif cantNaipes.count(0) == len(self.jugadores): # todos los jugadores quedaron con 0 cartas (draw)
             self.gameFinished = True
+            self.durak = -1
+
         return self.gameFinished
     
     def getDurak(self):
         return self.durak
+
 
     def play(self, posicion, screen, carta = "pass"):
         pos_zona = [(180,180), (250,180), (320, 180), (390, 180), (460, 180), (530,180)]
@@ -297,7 +309,7 @@ class Juego(st.Estados_Juego):
         print("Defensa: ", " ".join(defe)+ "\n")
 
         print("Turno del jugador " + str(self.getActivePlayer()))
-        if self.getActivePlayer() == 0:
+        if self.getActivePlayer() == 0 and len(self.cartasJugadas["ataque"]) != 6:
             if self.boolAtq == True:
                 print("El jugador 0 es un atacante:")
                 cartasPosibles = self.cartasPosibles()
@@ -314,6 +326,7 @@ class Juego(st.Estados_Juego):
                     
         self.refreshUI(screen)    
     
+   
     def game(self, screen):
         if self.boolDfs == False:
             x = lambda carta: self.jugadores[self.defensor].sacarCarta(carta)
@@ -325,10 +338,20 @@ class Juego(st.Estados_Juego):
                 self.actualizarMano(self.defensor)
             
 
-        self.cartasJugadas = {"ataque": [], "defensa": []}
         
         self.endTurn = False
         self.actualizarTurno()
+        self.atacante = int(self.turno)
+        self.getDefensor()
+        print("El atacante inicial es el jugador " + str(self.atacante) + " y el defensor de esta ronda es " + str(self.defensor))
+
+        
+
+        self.boolAtq = True
+        self.boolDfs = True
+        self.cartasJugadas = {"ataque": [], "defensa": []}
+
+
 
         # Future proof
         self.repartirCartas(self.atacantes, screen)
@@ -338,11 +361,16 @@ class Juego(st.Estados_Juego):
 
         # Revisa si la partida termino
         self.checkGame()
-        if self.gameFinished:
+        if self.gameFinished == True:
             print ("Game Over")
             if self.durak != -1:
                 print ("El jugador " + self.durak + " es nuestro querido Durak, felicidades, perdedor.")
+
+            else:
+                print ("Empate!")
+
             self.st_done = True
+            self.next = "FIN"
         else:
             # avanzar los turnos
             self.actualizarTurno()
@@ -391,7 +419,6 @@ class Juego(st.Estados_Juego):
 
             # Humano
             if (self.atacante == 0 and self.boolAtq == True) or ((self.defensor == 0 and self.boolAtq == False) and self.boolDfs == True):
-            
                 cartasPosibles = self.cartasPosibles()
 
                 if len(cartasPosibles) > 0:
@@ -427,8 +454,6 @@ class Juego(st.Estados_Juego):
                 print("Clickeando sobre CARTA1")
                 print(self.cartaHumano.printNaipe())
                 self.play(0, screen, self.cartaHumano)
-
-                
         else:
             self.u1.mouseOverButton(False, 370)
         
@@ -442,7 +467,6 @@ class Juego(st.Estados_Juego):
                 print("Clickeando sobre CARTA2")
                 print(self.cartaHumano.printNaipe())
                 self.play(0, screen, self.cartaHumano)
-            
         else:
             self.u2.mouseOverButton(False, 370)
             
@@ -456,7 +480,6 @@ class Juego(st.Estados_Juego):
                 print("Clickeando sobre CARTA1")
                 print(self.cartaHumano.printNaipe())
                 self.play(0, screen, self.cartaHumano)
-
         else:
             self.u3.mouseOverButton(False, 370)
 
@@ -499,9 +522,11 @@ class Juego(st.Estados_Juego):
             else:
                 self.mode_pause = True
 
-        ''' 
+
+        '''
         if  self.checkGame() == True:
             print ("Gracias por jugar")
+            x = input()
         '''
 
         if (event.type == pygame.QUIT) or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
