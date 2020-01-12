@@ -185,7 +185,9 @@ class JugadorCPU(Jugador):
         else:
             posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
             if boolAtaque == True:  # Toca atacar
-
+                chance = random.choice(["jugar"] + ["pass"] + ["jugar"])
+                if chance == "pass":
+                    return "pass"
                 # Significa que este es el primer ataque
                 if len(listaCartasEnJuego["defensa"]) + len(listaCartasEnJuego["ataque"]) == 0:
                     calif = []
