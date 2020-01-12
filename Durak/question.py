@@ -27,7 +27,6 @@ class Question(st.Estados_Juego):
             with open("log.txt", 'r') as f:
                 # ve si t: salto la cosa, f - muestro la question_box (dejo al decision al usuario)
                 self.answer = (f.readlines()[0].split(":"))[1]
-                print("el answer es " + self.answer)
                 aux = ["f", "t", True, False]
                 # archivo roto, borramos.
                 if self.answer not in aux:
@@ -60,8 +59,8 @@ class Question(st.Estados_Juego):
 
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
-                #self.next = "TUTORIAL"
-                self.next = "MENU"
+                self.next = "TUTORIAL"
+               
 
     def render(self, clock, screen, p):
 
@@ -81,7 +80,11 @@ class Question(st.Estados_Juego):
                         (self.show_tut.getX(), self.show_tut.getY()))
             [self.get_event(event, pygame.key.get_pressed())
 
-
              for event in pygame.event.get()]
 
+        temp = pygame.image.load(st.current_dir() + "/data/other/game_start3.png").convert_alpha()
+        temp = pygame.transform.scale(temp, (800, 500))
+        screen.blit(temp, (0,0))            
+        pygame.time.delay(600)
+        pygame.display.update()
 

@@ -6,9 +6,6 @@ from naipe import Naipe
 # recibe una img extra, "activa", si la imagen debe cambiar.
 # pensar en que jackets de los AI's se ponen azules al estar activos.
 
-# recibe una img extra, "activa", si la imagen debe cambiar.
-# pensar en que jackets de los AI's se ponen azules al estar activos.
-
 
 class BotonCarta():
     def __init__(self, x, y, width, height, nombre, activa, enabled):
@@ -75,7 +72,6 @@ class BotonCarta():
 
     def getY(self):
         return self.tall
-
 
     def getNombre(self):
         return self.name
