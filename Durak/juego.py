@@ -618,10 +618,17 @@ class Juego(st.Estados_Juego):
         cant_Textos.insert(0, tt.render_text("S", str(self.jugadores[0].mostrarCantidad()), self.white))
         return cant_Textos
 
+    def updateParcial(self, screen, p):
+        screen.fill(self.background_color,(0,0,p[0],p[1]//2 - 100))
+        screen.fill(self.background_color,(0,p[1]//2 + 100,p[0],p[1]//2 + 100))
+        screen.fill(self.background_color,(0,0,p[0]//2 - 300,p[1]))
+        screen.fill(self.background_color,(p[0]//2 + 300,0,p[0]//2,p[1]))
+
+
     def render(self, clock, screen, p):
+        #se inicia sin pausar el juego
         self.mode_pause = True
         screen.fill(self.background_color)
-        # Prepara para dibujar
         self.gameStart(screen) # Inicializa valores para el juego
         # Mano del humano muestra 3 cartas
 
@@ -679,16 +686,9 @@ class Juego(st.Estados_Juego):
                 pause_text = tt.render_text("M", "PAUSE", self.white)
                 count = 0
                 while not self.mode_pause:
-                    #rellenan la pantalla con background_color, sin blitear sobre las cartas
-                    #porque al volver a presionar SPACE, queremos volver a jugar y ver las cartas sobre la mesa
-                    screen.fill(self.background_color,(0,0,p[0],p[1]//2 - 100))
-                    screen.fill(self.background_color,(0,p[1]//2 + 100,p[0],p[1]//2 + 100))
-                    screen.fill(self.background_color,(0,0,p[0]//2 - 300,p[1]))
-                    screen.fill(self.background_color,(p[0]//2 + 300,0,p[0]//2,p[1]))
-
+                    #se rellena la pantalla, formando un arco, que no cubre zona de ataque (central, ahi se conservan las cartas)
+                    self.updateParcial(screen, p)
                     screen.blit(pause_text, (p[0]/2 - pause_text.get_width()//2, 20))
-
-
                     term_text = tt.render_text("S", ">Presione SPACE para volver a jugar...", self.white_to_bg_fade[count % len(self.white_to_bg_fade)])
                     screen.blit(term_text, (p[0]/2 - term_text.get_width() //
                                     2, p[1] - term_text.get_height() - 100// 2))
@@ -697,13 +697,9 @@ class Juego(st.Estados_Juego):
                     clock.tick(5)
                     [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]
                 #como estoy volviendo al juego, relleno de nuevo la pantalla para blitear cartas de opontentes y al humano sobre ella
-                screen.fill(self.background_color,(0,0,p[0],p[1]//2 - 100))
-                screen.fill(self.background_color,(0,p[1]//2 + 100,p[0],p[1]//2 + 100))
-                screen.fill(self.background_color,(0,0,p[0]//2 - 300,p[1]))
-                screen.fill(self.background_color,(p[0]//2 + 300,0,p[0]//2,p[1]))
+                
 
             [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]
-            #despues de todo, como las cartas de humano se suben y bajan, aparte bliteo un rectangulo
-            #que me llene solo la zona activa de humano
-            screen.fill(self.background_color,(0,p[1]//2 + 70,p[0],p[1]//2)) 
+            #como estoy volviendo al juego, relleno de nuevo la pantalla para blitear cartas de opontentes y al humano sobre ella
+            self.updateParcial(screen, p)
             
