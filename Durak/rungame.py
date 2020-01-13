@@ -30,7 +30,8 @@ class RunGame():
             "QUESTION_BOX": question.Question(),
             "TUTORIAL": tutorial.Tutorial(),
             "JUEGO": juego.Juego(6),
-            "CREDITOS": creditos.Creditos()
+            "CREDITOS": creditos.Creditos(),
+            "FIN": menu.Menu()
         }
         # el estado actual (en que stage esta el juego)
         self.state_name = "INTRO"
@@ -39,7 +40,7 @@ class RunGame():
         self.state = self.state_dict[self.state_name]
         # tecla recibida
         self.key = pygame.key.get_pressed()
-        print("Instancee excitosamente la clase RunGame de rungame.py")
+        print("Instancee exitosamente la clase RunGame de rungame.py")
 
     def game_loop(self):
         for event in pygame.event.get():
