@@ -426,14 +426,6 @@ class Juego(st.Estados_Juego):
         self.cant_Textos.insert(indice, nuevo_texto)
 
     def get_event(self, event, keys, screen):
-        
-        # Para los hovers/ clickeos sobre las CARTAS
-        # sobre carta 1
-                
-        #agregar no reaccionar a las cartas nulas
-        
-        # Carta 1
-
 
         if self.u1.getRekt().collidepoint(pygame.mouse.get_pos()) and self.revisarJugada(self.u1.makeNaipe()) == True and self.checkGame() != True and self.mode_pause:   
 
@@ -646,7 +638,6 @@ class Juego(st.Estados_Juego):
                 self.cardOnScreen(
                     screen, self.manoVisible[2], (self.u3.getX(), self.u3.getY()))
 
-
                 self.mostrarOponentes(screen)
                 # Debajo de cada carta, se imprime la cantidad de naipes de cada jugador.
                 self.mostrarCantidadNaipes(screen, self.cant_Textos)
@@ -660,10 +651,9 @@ class Juego(st.Estados_Juego):
                 self.mostrarPasar(screen)
                 #muestra el boton de pausar,musica y sonidos
                 self.mostrarOptions(screen)
-
-
                 pygame.display.update()
-                #screen.fill(self.background_color,(self.u1.getX(),self.u1.getY(),800,300))
+
+                
                 # Turno de la CPU
                 if not ((self.atacante == 0 and self.boolAtq == True) or ((self.defensor == 0 and self.boolAtq == False) and self.boolDfs == True) and self.checkGame() != True):
                     pygame.time.wait(900) # Timer de 1.5 segundos para que no reviente la consola 
@@ -695,10 +685,7 @@ class Juego(st.Estados_Juego):
                     pygame.display.flip()
                     count += 1
                     clock.tick(5)
-                    [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]
-                #como estoy volviendo al juego, relleno de nuevo la pantalla para blitear cartas de opontentes y al humano sobre ella
-                
-
+                    [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]    
             [self.get_event(event, pygame.key.get_pressed(), screen) for event in pygame.event.get()]
             #como estoy volviendo al juego, relleno de nuevo la pantalla para blitear cartas de opontentes y al humano sobre ella
             self.updateParcial(screen, p)
