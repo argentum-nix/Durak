@@ -15,7 +15,6 @@ from botonCarta import BotonCarta
 
 class Juego(st.Estados_Juego):
     def __init__(self, nJugadores):
-
         st.Estados_Juego.__init__(self)
         self.nJugadores = nJugadores
         # Crea a los n jugadores (incluyendo al usuario como jugador 0) y los guarda en una lista
@@ -23,7 +22,6 @@ class Juego(st.Estados_Juego):
         self.next = "MENU"
         self.st_done = False
  
-        self.baraja = []  # Crea la baraja para la partida
 
         # Muestra la primera carta de la baraja para conseguir el trump
         self.trump = Naipe("Null", 0)
@@ -534,8 +532,7 @@ class Juego(st.Estados_Juego):
         self.actualizarMano(0)
 
     def mostrarCantidadNaipes(self, screen, listaTextos):
-        screen.blit(listaTextos[0],
-                    (self.u2.getX() + 33, self.u2.getY() + 107))
+        screen.blit(listaTextos[0],(self.u2.getX() + 33, self.u2.getY() + 107))
         list(map(lambda i: screen.blit(listaTextos[i + 1], (self.bot_ai[i].getX(
         ) + 33, self.bot_ai[i].getY() + 107)), [i for i in range(5)]))
 
@@ -571,11 +568,10 @@ class Juego(st.Estados_Juego):
         # t1 es la carta trump
         self.t1 = BotonCarta(
             100, 400, 50, 67, self.trump.fileNaipe(), False, False)
+
     def mostrarFlechas(self, screen):
-        down = self.arrow_down.getImg()
-        up = self.arrow_up.getImg()
-        screen.blit(down, (self.arrow_down.getX(), self.arrow_down.getY()))
-        screen.blit(up, (self.arrow_up.getX(), self.arrow_up.getY()))
+        screen.blit(self.arrow_down.getImg(), (self.arrow_down.getX(), self.arrow_down.getY()))
+        screen.blit(self.arrow_up.getImg(), (self.arrow_up.getX(), self.arrow_up.getY()))
 
     def mostrarTomar(self, screen):
         screen.blit(self.tomar.getImg(),(self.tomar.getX(),self.tomar.getY()))
@@ -605,7 +601,7 @@ class Juego(st.Estados_Juego):
     def turnoCPU(self, screen): 
         #Se utiliza un timer, para que el juego no sea demasiado rapido.
         pygame.time.wait(900) 
-        if  not self.checkGame():
+        if not self.checkGame():
             print(self.boolAtq)
             if self.boolAtq:
                 #Turno de atacante
