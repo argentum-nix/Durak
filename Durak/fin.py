@@ -23,6 +23,7 @@ class GameFinished(st.Estados_Juego):
 
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
+        count = 0
         while not self.st_done:
             term_text = tt.render_text("S", ">Presione SPACE para volver al menu...",
                                        self.white_to_bg_fade[count % len(self.white_to_bg_fade)])
