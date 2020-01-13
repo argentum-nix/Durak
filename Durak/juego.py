@@ -13,7 +13,7 @@ from jugador import Jugador, JugadorCPU, JugadorHumano
 from botonCarta import BotonCarta
 
 
-class Juego(st.Estados_Juego):
+class Juego(st.Estados_Juego): 
     def __init__(self, nJugadores):
         st.Estados_Juego.__init__(self)
         self.nJugadores = nJugadores
@@ -46,7 +46,6 @@ class Juego(st.Estados_Juego):
         self.cartasJugadas = {"ataque": [], "defensa": []}
         self.cartaHumano = Naipe("Null", 0) # Carta que puede jugar el humano, captada por el click en pantalla
 
-        self.durak = -1 # Indice del player que termina siendo durak, -1 si la partida termina en draw
         self.gameFinished = False # Bool que determina si la partida sigue o termina
 
         # u1, u2 y u3 son las 3 cartas visibles del usuario
@@ -153,9 +152,7 @@ class Juego(st.Estados_Juego):
             print("Las cartas que puedes jugar son:")
             print([carta.printNaipe() for carta in cartasPosibles])
             print("Si no tienes cartas o no quieres jugar este turno, presiona el botón 'PASAR':")
-
-            
-    
+  
     def nextAtaquer(self):
         if self.atacante == (len(self.jugadores) - 1):
             self.atacante = 0
@@ -203,7 +200,7 @@ class Juego(st.Estados_Juego):
                 if cantNaipes[i] != 0:
                     self.durak = i # Asigna el indice del durak
     
-        elif cantNaipes.count(0) == len(self.jugadores): # todos los jugadores quedaron con 0 cartas (draw)
+        elif cantNaipes.count(0) == len(self.jugadores): # todos los jugadores quedaron con 0 cartas (draw), caso que no pasa
             self.gameFinished = True
             self.durak = -1
 
@@ -212,13 +209,12 @@ class Juego(st.Estados_Juego):
     def getDurak(self):
         return self.durak
 
-
     def play(self, posicion, screen, carta = "pass"):
         pos_zona = [(180,180), (250,180), (320, 180), (390, 180), (460, 180), (530,180)]
         pos_zona_desfase = [(190,220),(260,220),(330, 220),(400, 220),(470, 220),(550,220)]
         # Maneja la continuidad de los turnos
         if posicion == self.atacante and len(self.passers) > 0:
-            if posicion == self.passers[0]:
+            if posicion == self.passers[0]: #TODO: revisar si funciona como esperaba
                 self.endTurn = True
                 self.atacante_count = 0
                 self.defensor_count = 0
@@ -321,30 +317,26 @@ class Juego(st.Estados_Juego):
 
         
         self.endTurn = False
-        self.actualizarTurno()
-        self.atacante = int(self.turno)
-        self.getDefensor()
-        print("El atacante inicial es el jugador " + str(self.atacante) + " y el defensor de esta ronda es " + str(self.defensor))
-
-        
-
-        self.boolAtq = True
-        self.boolDfs = True
-        self.cartasJugadas = {"ataque": [], "defensa": []}
-
-
-
-        # Future proof
-        self.repartirCartas(self.atacantes, screen)
-        self.repartirCartas([self.jugadores[self.defensor]], screen)
-
-        self.atacantes= []
-
         # Revisa si la partida termino
         self.checkGame()
         if not self.gameFinished:
             # avanzar los turnos
             self.actualizarTurno()
+
+            self.atacante = int(self.turno)
+            self.getDefensor()
+            print("El atacante inicial es el jugador " + str(self.atacante) + " y el defensor de esta ronda es " + str(self.defensor))
+
+            self.boolAtq = True
+            self.boolDfs = True
+            self.cartasJugadas = {"ataque": [], "defensa": []}
+
+            # Future proof
+            self.repartirCartas(self.atacantes, screen)
+            self.repartirCartas([self.jugadores[self.defensor]], screen)
+
+            self.atacantes= []
+
 
     # Lista con las cartas de la mano del humano que se pueden jugar en este turno
     def cartasPosibles(self):
@@ -450,7 +442,7 @@ class Juego(st.Estados_Juego):
         if (not self.atacante or not self.defensor) and not self.checkGame() and self.mode_pause:
             
             #humano es el defensor, puede tomar cartas en cualquier momento (no solo si no pueda defenderse). Tecla: t
-            if not self.defensor and self.boolDfs:
+            if not self.defensor and self.boolDfs and not self.boolAtq:
                 self.tomar.isActivePlayer(True)
                 if (self.tomar.getRekt().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN) or (event.type == pygame.KEYDOWN and event.key == pygame.K_t):
                     self.tomar.isActivePlayer(False)
@@ -488,8 +480,7 @@ class Juego(st.Estados_Juego):
         if self.gameFinished == True:
             print ("Game Over")
             if self.durak != -1:
-                print ("El jugador " + self.durak + " es nuestro querido Durak, felicidades, perdedor.")
-
+                print ("El jugador " + str(self.durak) + " es nuestro querido Durak, felicidades, perdedor.")
             else:
                 print ("Empate!")
 
@@ -613,6 +604,22 @@ class Juego(st.Estados_Juego):
                     print("turno de defensor")
                     self.play(self.defensor, screen)
 
+    def checkTurn(self, jugadorActual, screen):
+        if jugadorActual == self.atacante and len(self.passers) > 0: 
+            if jugadorActual == self.passers[0]: # Si todos pasan la ronda
+                self.endTurn = True
+                self.atacante_count = 0
+                self.defensor_count = 0
+                self.passers = []
+                print("Ningun jugador fue capaz de realizar un ataque, fin del turno") 
+
+        if (self.jugadores[self.defensor].mostrarCantidad() == 0) or (len(self.cartasJugadas["ataque"]) == 6 and self.boolAtq):
+            self.endTurn = True # Si el defensor se queda sin cartas o las cartas jugadas en ataque llegan a 6, termina el turno
+            self.atacante_count = 0
+            self.defensor_count = 0
+            self.passers = []
+        #self.refreshUI(screen)
+
     def render(self, clock, screen, p):
         #se inicia sin pausar el juego
         self.mode_pause = True
@@ -648,12 +655,15 @@ class Juego(st.Estados_Juego):
                 self.mostrarOptions(screen)
                 pygame.display.update()
 
+                if self.boolAtq: self.checkTurn(self.atacante, screen)
                 
                 # Turno de la CPU
                 if not ((self.atacante == 0 and self.boolAtq == True) or ((self.defensor == 0 and self.boolAtq == False) and self.boolDfs == True) and self.checkGame() != True):
-                    self.turnoCPU(screen)
+                    if not self.endTurn: self.turnoCPU(screen)
                 
-                #Una vez que termine el turno, borramos las cartas de la zona de ataque, y reiniciamos el turno.
+                if self.boolAtq: self.checkTurn(self.atacante, screen)
+
+                #Una vez que termine la ronda, borramos las cartas de la zona de ataque, y reiniciamos el turno.
                 if (len(self.cartasJugadas["ataque"]) == 6 and self.boolAtq) or self.endTurn:
                     self.game(screen)
                     screen.fill(self.background_color)
