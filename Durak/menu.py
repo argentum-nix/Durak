@@ -2,6 +2,7 @@ import pygame
 import sys_tools as st
 import text_tools as tt
 from botonCarta import BotonCarta
+import sys
 
 
 class Menu(st.Estados_Juego):
@@ -21,6 +22,7 @@ class Menu(st.Estados_Juego):
         if self.botones[0].getRekt().collidepoint(pygame.mouse.get_pos()):
             self.botones[0].isActivePlayer(True)
             if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
                 self.st_done = True
                 self.next = "QUESTION_BOX"
         else:
@@ -29,6 +31,7 @@ class Menu(st.Estados_Juego):
         if self.botones[1].getRekt().collidepoint(pygame.mouse.get_pos()):
             self.botones[1].isActivePlayer(True)
             if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
                 self.st_done = True
                 self.next = "CREDITOS"
         else:
@@ -37,8 +40,11 @@ class Menu(st.Estados_Juego):
         if self.botones[2].getRekt().collidepoint(pygame.mouse.get_pos()):
             self.botones[2].isActivePlayer(True)
             if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
+                self.st_done = True
                 self.quit = True
                 pygame.quit()
+                exit()
         else:
             self.botones[2].isActivePlayer(False)
 
@@ -48,6 +54,7 @@ class Menu(st.Estados_Juego):
 
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
+        self.touchCard = pygame.mixer.Sound('data/other/card-flip.wav')
         #Muestra los strings en posiciones indicadas
         strings = [(">JUGAR", 112), (">CREDITOS", 330), (">SALIR", 562)]
         [(lambda t: screen.blit(tt.render_text("S", t[0], self.white),(t[1], 135)))(t) for t in strings]

@@ -19,7 +19,7 @@ class Juego(st.Estados_Juego):
         self.nJugadores = nJugadores
         # Crea a los n jugadores (incluyendo al usuario como jugador 0) y los guarda en una lista
         self.jugadores = []
-        self.next = "MENU"
+        self.next = "FIN"
         self.st_done = False
  
 
@@ -35,7 +35,6 @@ class Juego(st.Estados_Juego):
         #* Estos valores son "estaticos", solo cambian al finalizar la ronda de ataques
         self.turno = -1 # Indice del jugador al que le corresponde el turno original 
         self.defensor = -1 # Indice del jugador al que le corresponde defender
-
         self.atacante = -1  # Indice del jugador al que le corresponde el turno para atacar
         self.boolAtq = True # boolean que indica el jugador activo, True para atacante, False para defensor
         self.boolDfs = True # boolean que indica si el defensor tiene cartas para defender, en caso contrario perdera su turno hasta que todos los atacantes terminen
@@ -58,6 +57,7 @@ class Juego(st.Estados_Juego):
         self.imagesName = []
         self.createOptionButtons()
         self.createJacketsAI()
+        self.touchCardflag = False
 
 
     def createOptionButtons(self):
@@ -210,6 +210,8 @@ class Juego(st.Estados_Juego):
         return self.durak
 
     def play(self, posicion, screen, carta = "pass"):
+        self.playCard = pygame.mixer.Sound('data/other/card-deal.wav')
+
         pos_zona = [(180,180), (250,180), (320, 180), (390, 180), (460, 180), (530,180)]
         pos_zona_desfase = [(190,220),(260,220),(330, 220),(400, 220),(470, 220),(550,220)]
         # Maneja la continuidad de los turnos
@@ -252,6 +254,7 @@ class Juego(st.Estados_Juego):
                     self.defensor_count = 0
 
                 print("El jugador " + str(posicion) + " defendió con la carta " + carta.printNaipe())
+                self.playCard.play()
                 self.changeActive()
 
                 if posicion == 0:
@@ -273,6 +276,7 @@ class Juego(st.Estados_Juego):
                 print("El jugador " + str(posicion) + " atacó con la carta " + carta.printNaipe())
                 self.passers = []
                 self.changeActive()
+                self.playCard.play()
                 if posicion == 0:
                     self.refreshUI(screen)
                 else:
@@ -305,16 +309,18 @@ class Juego(st.Estados_Juego):
     
    
     def game(self, screen):
+        self.receiveCards = pygame.mixer.Sound('data/other/card-bridge.wav')
         if self.boolDfs == False:
-            x = lambda carta: self.jugadores[self.defensor].sacarCarta(carta)
+            x = lambda carta: self.jugadores[self.defensor].sacarCarta(carta)     
+            if(len(self.cartasJugadas["ataque"] + self.cartasJugadas["defensa"]) > 0 ): 
+                self.receiveCards.play()
             for carta in self.cartasJugadas["ataque"] + self.cartasJugadas["defensa"]:
                 x(carta)
             if self.defensor == 0:
                 self.refreshUI(screen)
             else: 
                 self.actualizarMano(self.defensor)
-            
-
+        
         
         self.endTurn = False
         # Revisa si la partida termino
@@ -399,11 +405,13 @@ class Juego(st.Estados_Juego):
         self.cant_Textos.insert(indice, nuevo_texto)
 
     def get_event(self, event, keys, screen):
-
+        
+        # Carta 1
         if self.u1.getRekt().collidepoint(pygame.mouse.get_pos()) and self.revisarJugada(self.u1.makeNaipe()) == True and self.checkGame() != True and self.mode_pause:   
-
-            self.u1.mouseOverButton(True, 340)
             
+            self.u1.mouseOverButton(True, 340)
+            self.touchCardflag = True
+           
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("Clickeando sobre CARTA1")
@@ -411,11 +419,11 @@ class Juego(st.Estados_Juego):
                 self.play(0, screen, self.cartaHumano)
         else:
             self.u1.mouseOverButton(False, 370)
-        
+            
 
         # Carta 2
         if self.u2.getRekt().collidepoint(pygame.mouse.get_pos()) and self.revisarJugada(self.u2.makeNaipe()) == True and self.checkGame() != True and self.mode_pause:   
-
+            self.touchCardflag =  True
             self.u2.mouseOverButton(True, 340) 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -424,11 +432,11 @@ class Juego(st.Estados_Juego):
                 self.play(0, screen, self.cartaHumano)
         else:
             self.u2.mouseOverButton(False, 370)
-            
+          
 
         # Carta 3
         if self.u3.getRekt().collidepoint(pygame.mouse.get_pos()) and self.revisarJugada(self.u3.makeNaipe()) == True and self.checkGame() != True and self.mode_pause:   
-
+            self.touchCardflag =  True
             self.u3.mouseOverButton(True, 340) 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -437,6 +445,41 @@ class Juego(st.Estados_Juego):
                 self.play(0, screen, self.cartaHumano)
         else:
             self.u3.mouseOverButton(False, 370)
+           
+
+
+        # Volumen
+        if self.sound.getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.sound.isActivePlayer(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.volume == 1: #volumen default
+                    self.volume = 2
+                    pygame.mixer.music.set_volume(0.7)
+                elif self.volume == 2: # volumen = 0.7
+                    self.volume = 3
+                    pygame.mixer.music.set_volume(0.3)
+                elif self.volume == 3: # volumen 0.3
+                    self.volume = 0
+                    pygame.mixer.music.set_volume(0.0)
+                else:
+                    self.volume = 1
+                    pygame.mixer.music.set_volume(1.0)
+        else:
+            self.sound.isActivePlayer(False)
+        
+        # Pausar musica
+        if self.music.getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.music.isActivePlayer(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.pauseMusic == False: # Esta sonando el bgm
+                    self.pauseMusic = True
+                    pygame.mixer.music.pause()
+                else: 
+                    self.pauseMusic = False
+                    pygame.mixer.music.unpause()
+        else:
+            self.music.isActivePlayer(False)
+        
 
         # Si esque el humano no tiene cartas validas para jugar
         if (not self.atacante or not self.defensor) and not self.checkGame() and self.mode_pause:
@@ -486,6 +529,7 @@ class Juego(st.Estados_Juego):
 
             self.st_done = True
             self.next = "FIN"
+            pygame.mixer.music.stop()
 
         if (event.type == pygame.QUIT) or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             self.quit = True
@@ -590,12 +634,10 @@ class Juego(st.Estados_Juego):
         screen.fill(self.background_color,(0,p[1]//2 + 70,p[0],p[1]//2)) 
 
     def turnoCPU(self, screen): 
-        #Se utiliza un timer, para que el juego no sea demasiado rapido.
-        pygame.time.wait(900) 
         if not self.checkGame():
             print(self.boolAtq)
             if self.boolAtq:
-                #Turno de atacante
+            #Turno de atacante
                 print("turno de atacante")
                 self.play(self.atacante, screen)
             else:
@@ -603,6 +645,7 @@ class Juego(st.Estados_Juego):
                     #Turno de defensor
                     print("turno de defensor")
                     self.play(self.defensor, screen)
+         
 
     def checkTurn(self, jugadorActual, screen):
         if jugadorActual == self.atacante and len(self.passers) > 0: 
@@ -620,8 +663,26 @@ class Juego(st.Estados_Juego):
             self.passers = []
         #self.refreshUI(screen)
 
+    def gameMusic(self):
+
+        pygame.mixer.music.load("data/other/bgm.mp3") 
+
+        self.touchCard = pygame.mixer.Sound('data/other/card-flip.wav')
+        self.touchPlayed = False
+
+        self.volume = 1
+        self.pauseMusic = False 
+
+        pygame.mixer.music.play(-1,0.0)
+    
+    def userSFX(self):
+        if self.touchPlayed == False:
+            self.touchPlayed == True
+            self.touchCard.play()
+
     def render(self, clock, screen, p):
         #se inicia sin pausar el juego
+        self.gameMusic()
         self.mode_pause = True
         screen.fill(self.background_color)
         # Inicializa valores para el juego
@@ -631,7 +692,9 @@ class Juego(st.Estados_Juego):
         self.refreshUI(screen)   
         #Mientras el juego sigue:
         while not self.st_done:
+
             if self.mode_pause:
+
                 #dibuja mano de jugador, siempre debe estar en la pantalla
                 self.cardOnScreen(
                     screen, self.manoVisible[0], (self.u1.getX(), self.u1.getY()))
@@ -657,7 +720,6 @@ class Juego(st.Estados_Juego):
 
                 if self.boolAtq: self.checkTurn(self.atacante, screen)
                 
-                # Turno de la CPU
                 if not ((self.atacante == 0 and self.boolAtq == True) or ((self.defensor == 0 and self.boolAtq == False) and self.boolDfs == True) and self.checkGame() != True):
                     if not self.endTurn: self.turnoCPU(screen)
                 
