@@ -19,32 +19,51 @@ class Intro(st.Estados_Juego)
  |  nuevo color, según la lista self.white_to_bg_fade
 '''
 
+
 class Intro(st.Estados_Juego):
     def __init__(self):
         st.Estados_Juego.__init__(self)
 
+    '''
+    get_event(self, event, keys)
+    |   Función, que analiza los eventos de juego. Al cerrar la ventana (ESC),
+    |   el evento corresponde a pygame.QUIT y se termina la ejecución del código.
+    |   En caso de presionar cualquier botón, el jugador acceda al menu.
+    '''
+
     def get_event(self, event, keys):
         if event.type == pygame.QUIT:
-            self.quit = True
             pygame.quit()
             exit()
         elif event.type == pygame.KEYDOWN:
             self.st_done = True
             self.next = "MENU"
 
+    '''
+    makeBotones(self)
+    |
+    |   Funcion, responsable de crear una lista de tres botones,
+    |   en las posiciones, indicadas por las tuplas, de tipo (width, height)
+    |   CONCEPTOS DE CURSO: Formas funcionales: lambda. Comprensión de listas.  
+    '''
+
     def render(self, clock, screen, p):
-        pygame.mixer.music.load("data/other/menu_intro.mp3") 
-        pygame.mixer.music.play(1,0.0)
-        screen.fill(self.background_color)    
+        pygame.mixer.music.load("data/other/menu_intro.mp3")
+        pygame.mixer.music.play(1, 0.0)
+        screen.fill(self.background_color)
         text_logo = tt.render_text("L", "Durak", self.white)
         screen.blit(text_logo, (p[0] / 2 - text_logo.get_width() //
-                                2, p[1] / 2  -text_logo.get_height() // 2))      
+                                2, p[1] / 2 - text_logo.get_height() // 2))
         count = 0
         while not self.st_done:
+
             term_text = tt.render_text(
-                "S", ">Presione cualquier tecla para continuar...", self.white_to_bg_fade[count % len(self.white_to_bg_fade)])
-            screen.blit(term_text, (p[0] / 2 - term_text.get_width() //
-                                    2, p[1] - 100 / 2 - term_text.get_height() // 2))
+                "S", ">Presione cualquier tecla para continuar...",
+                self.white_to_bg_fade[count % len(self.white_to_bg_fade)])
+
+            screen.blit(term_text, (p[0] / 2 - term_text.get_width() // 2,
+                                    p[1] - 100 / 2 - term_text.get_height() // 2))
+
             pygame.display.flip()
             count += 1
             clock.tick(5)
