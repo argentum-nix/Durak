@@ -21,18 +21,16 @@ class Question(st.Estados_Juego):
         self.show_tut = BotonCarta(
             450, 240, 90, 90, "continue.png", False, True)
 
-
     def skipCheck(self):
         try:
             with open("log.txt", 'r') as f:
-                # ve si t: salto la cosa, f - muestro la question_box (dejo al decision al usuario)
+                # True: se salta el tutorial y nunca mas se muestra.
+                # False: se pregunta al usuario si este quiere ver el tutorial.
                 self.answer = (f.readlines()[0].split(":"))[1]
                 aux = ["f", "t", True, False]
-                # archivo roto, borramos.
+                # Arhcivo roto (usuario modifico el archivo/otra causa)
                 if self.answer not in aux:
-                    print("entre al delete con answer " + self.answer)
                     st.delete_txt("log.txt")
-                    # escribe un archivo de nuevo
                     self.skipCheck()
                 else:
                     self.answer = {"f": False, "t": True}[self.answer]
@@ -42,7 +40,6 @@ class Question(st.Estados_Juego):
                 self.answer = False
         finally:
             f.close()
-
 
     def clean(self):
         pass
@@ -60,7 +57,6 @@ class Question(st.Estados_Juego):
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
                 self.next = "TUTORIAL"
-               
 
     def render(self, clock, screen, p):
 
@@ -82,9 +78,9 @@ class Question(st.Estados_Juego):
 
              for event in pygame.event.get()]
 
-        temp = pygame.image.load(st.current_dir() + "/data/other/game_start3.png").convert_alpha()
+        temp = pygame.image.load(
+            st.current_dir() + "/data/other/game_start3.png").convert_alpha()
         temp = pygame.transform.scale(temp, (800, 500))
-        screen.blit(temp, (0,0))            
+        screen.blit(temp, (0, 0))
         pygame.time.delay(600)
         pygame.display.update()
-

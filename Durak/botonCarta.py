@@ -1,6 +1,5 @@
 import pygame
 import sys_tools as st
-import text_tools as tt 
 from naipe import Naipe
 
 # recibe una img extra, "activa", si la imagen debe cambiar.
@@ -34,16 +33,15 @@ class BotonCarta():
 
         self.name = nombre
 
-
     def mouseOverButton(self, mode, h):
         if self.enabled == True:
-            #mover la carta hacia arriba
+            # mover la carta hacia arriba
             if mode:
                 self.tall = h
             else:
                 self.tall = self.tall_aux
         else:
-            #nada lol
+            # nada lol
             pass
             print("No se puede utilizar la carta seleccionada.")
 
@@ -77,7 +75,7 @@ class BotonCarta():
         return self.name
 
     def makeNaipe(self):
-        # Se usa para crear un naipe, el cual sera retornado cuando el usuario haga click 
+        # Se usa para crear un naipe, el cual sera retornado cuando el usuario haga click
         # en la carta que quiere jugar
         if self.name == "NULL.png":
             return Naipe("Null", 0)
@@ -89,11 +87,10 @@ class BotonCarta():
             calificacion = "Picas"
         else:
             calificacion = "Tréboles"
-        
+
         if len(self.name) == 7:
             rank = self.name[2]
         else:
             rank = "{}{}".format(self.name[2], self.name[3])
 
         return Naipe(calificacion, int(rank))
-
