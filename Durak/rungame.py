@@ -10,6 +10,7 @@ import tutorial
 import fin
 
 
+
 '''
 class Rungame()
  |  Clase, que funciona como engine principal de juego.
@@ -23,7 +24,6 @@ class Rungame()
  |  Para clases Juego y GameFinished, las instancias son con paso de parametros,
  |  siendo estos la cantidad de jugadores y el perdedor de juego terminado.
  |  (6 y self.durak, respectivamente).
-
 '''
 
 class RunGame():

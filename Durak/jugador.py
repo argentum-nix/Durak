@@ -76,6 +76,7 @@ class JugadorHumano(Jugador):
                         if carta.isTrump(trump.calificacionNaipe()):
                             posiblesCartas.append(carta)
 
+
         return posiblesCartas
 
     def jugarCarta(self, carta):
@@ -140,14 +141,16 @@ class JugadorCPU(Jugador):
         self.mano[nuevaCarta.calificacionNaipe()] = sorted(
             self.mano[nuevaCarta.calificacionNaipe()], key=lambda x: x.valorNaipe())
 
+
     def getLowerTrump(self, trump):
         if len(self.mano[trump.calificacionNaipe()]) > 0:
             return self.mano[trump.calificacionNaipe()][0].valorNaipe()
         else:
             return 15
 
+
     # Retorna una lista con las cartas solicitadas
-    def buscarCartas(self, valor, trump="pass", calificacion="pass"):
+    def buscarCartas(self, valor, trump = "pass", calificacion="pass"):
         cartasEncontradas = []
         if calificacion == "pass":  # Significa que esta atacando y solo necesita cartas con el mismo numero ingresado en valor o que necesita la lista de cartas trump
             if trump == "pass":  # Significa que quiere cartas para atacar solamente.
@@ -169,6 +172,7 @@ class JugadorCPU(Jugador):
             if calificacion != trump.calificacionNaipe():
                 cartasEncontradas = cartasEncontradas + \
                     self.mano[trump.calificacionNaipe()]
+
 
         return cartasEncontradas
 
@@ -199,8 +203,10 @@ class JugadorCPU(Jugador):
                     calif = random.choice(calif)
                     # Elige la carta de menor valor de su mano
                     cartaAJugar = self.mano[calif][0]
+
                     self.mano[cartaAJugar.calificacionNaipe()].remove(
                         cartaAJugar)
+
                     return cartaAJugar
 
                 else:  # Significa que hay cartas en juego
@@ -220,6 +226,7 @@ class JugadorCPU(Jugador):
                 lastCard = listaCartasEnJuego["ataque"][-1]
                 posiblesCartas = self.buscarCartas(
                     lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
+
 
             # Si no se encontro ninguna carta para jugar, pasara el turno.
             if len(posiblesCartas) == 0:
