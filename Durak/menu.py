@@ -1,86 +1,68 @@
 import pygame
 import sys_tools as st
 import text_tools as tt
+from botonCarta import BotonCarta
+import sys
 
 
 class Menu(st.Estados_Juego):
     def __init__(self):
         st.Estados_Juego.__init__(self)
-        jacket_button1 = pygame.image.load(
-            st.current_dir() + "/data/cards/jacket_1.png").convert_alpha()
+        self.makeBotones()
 
-        jacket_button2 = pygame.image.load(
-            st.current_dir() + "/data/cards/jacket_2.png").convert_alpha()
-
-        self.b1 = pygame.Rect(102, 154, 135, 181)
-        self.b2 = pygame.Rect(322, 154, 135, 181)
-        self.b3 = pygame.Rect(552, 154, 135, 181)
-
-        jacket_button1 = pygame.transform.scale(jacket_button1, (160, 226))
-        jacket_button2 = pygame.transform.scale(jacket_button2, (160, 226))
-
-        self.images = [jacket_button1, jacket_button2]
-
-    def clean(self): 
+    def clean(self):
         pass
 
+    def makeBotones(self):
+        pos = [(102, 154), (322, 154), (552, 154)]
+        self.botones = list(map(lambda x: BotonCarta(
+            pos[x][0], pos[x][1], 130, 190, "Grey_1.png", "Blue_1.png", True), [x for x in range(0, 3)]))
+
     def get_event(self, event, keys):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.b1.collidepoint(pygame.mouse.get_pos()):
+        if self.botones[0].getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.botones[0].isActivePlayer(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
                 self.st_done = True
                 self.next = "QUESTION_BOX"
+        else:
+            self.botones[0].isActivePlayer(False)
 
-            elif self.b2.collidepoint(pygame.mouse.get_pos()):
+        if self.botones[1].getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.botones[1].isActivePlayer(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
                 self.st_done = True
                 self.next = "CREDITOS"
+        else:
+            self.botones[1].isActivePlayer(False)
 
-            elif self.b3.collidepoint(pygame.mouse.get_pos()):
+        if self.botones[2].getRekt().collidepoint(pygame.mouse.get_pos()):
+            self.botones[2].isActivePlayer(True)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.touchCard.play()
+                self.st_done = True
                 self.quit = True
                 pygame.quit()
+                exit()
+        else:
+            self.botones[2].isActivePlayer(False)
 
-        elif event.type == pygame.QUIT:
+        if event.type == pygame.QUIT:
             self.quit = True
             pygame.quit()
 
     def render(self, clock, screen, p):
         screen.fill(self.background_color)
-        # dibuja zonas donde funcionan los clicks
-        #pygame.draw.rect(screen, (255,255,255),(102,154,135,181))
-        #pygame.draw.rect(screen, (255,255,255),(322,154,135,181))
-        #pygame.draw.rect(screen, (255,255,255),(552,154,135,181))
-        boton1 = self.images[1]
-        boton2 = self.images[1]
-        boton3 = self.images[1]
-
-        boton1_text = tt.render_text("S", ">JUGAR", self.white)
-        boton2_text = tt.render_text("S", ">CREDITOS", self.white)
-        boton3_text = tt.render_text("S", ">SALIR", self.white)
-
-        screen.blit(boton1_text, (112, 135))
-        screen.blit(boton2_text, (330, 135))
-        screen.blit(boton3_text, (562, 135))
+        self.touchCard = pygame.mixer.Sound('data/other/card-flip.wav')
+        #Muestra los strings en posiciones indicadas
+        strings = [(">JUGAR", 112), (">CREDITOS", 330), (">SALIR", 562)]
+        [(lambda t: screen.blit(tt.render_text("S", t[0], self.white),(t[1], 135)))(t) for t in strings]
 
         while not self.st_done:
-            
-            screen.blit(boton1, (70, 120))
-            screen.blit(boton2, (290, 120))
-            screen.blit(boton3, (520, 120))
-
+            #Muestra los naipes - botones en posiciones indicadas
+            [(lambda b: screen.blit(b.getImg(), (b.getX(), b.getY())))(b)
+             for b in self.botones]
             pygame.display.update()
-            if self.b1.collidepoint(pygame.mouse.get_pos()):
-                boton1 = self.images[0]
-            else:
-                boton1 = self.images[1]
-
-            if self.b2.collidepoint(pygame.mouse.get_pos()):
-                boton2 = self.images[0]
-            else:
-                boton2 = self.images[1]
-
-            if self.b3.collidepoint(pygame.mouse.get_pos()):
-                boton3 = self.images[0]
-            else:
-                boton3 = self.images[1]
-
             [self.get_event(event, pygame.key.get_pressed())
              for event in pygame.event.get()]

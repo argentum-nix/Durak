@@ -68,13 +68,14 @@ class JugadorHumano(Jugador):
             lastCard = listaCartasEnJuego["ataque"][-1]
 
             for carta in self.mano:
-                if carta.valorNaipe() != '':                    
+                if carta.valorNaipe() != '':
                     if (int(carta.valorNaipe()) >= int(lastCard.valorNaipe())) and (carta.calificacionNaipe() == lastCard.calificacionNaipe()):
-                        posiblesCartas.append(carta) 
+                        posiblesCartas.append(carta)
                     # Si la ultima carta jugada no es trump:
-                    elif not lastCard.isTrump(trump.calificacionNaipe()): 
-                        if carta.isTrump(trump.calificacionNaipe()): 
-                            posiblesCartas.append(carta)     
+                    elif not lastCard.isTrump(trump.calificacionNaipe()):
+                        if carta.isTrump(trump.calificacionNaipe()):
+                            posiblesCartas.append(carta)
+
 
         return posiblesCartas
 
@@ -138,7 +139,8 @@ class JugadorCPU(Jugador):
     def sacarCarta(self, nuevaCarta):
         self.mano[nuevaCarta.calificacionNaipe()].append(nuevaCarta)
         self.mano[nuevaCarta.calificacionNaipe()] = sorted(
-            self.mano[nuevaCarta.calificacionNaipe()], key = lambda x: x.valorNaipe())
+            self.mano[nuevaCarta.calificacionNaipe()], key=lambda x: x.valorNaipe())
+
 
     def getLowerTrump(self, trump):
         if len(self.mano[trump.calificacionNaipe()]) > 0:
@@ -170,7 +172,7 @@ class JugadorCPU(Jugador):
             if calificacion != trump.calificacionNaipe():
                 cartasEncontradas = cartasEncontradas + \
                     self.mano[trump.calificacionNaipe()]
- 
+
 
         return cartasEncontradas
 
@@ -185,7 +187,7 @@ class JugadorCPU(Jugador):
         else:
             posiblesCartas = []  # Almacena todas las cartas que se pueden jugar en una lista
             if boolAtaque == True:  # Toca atacar
-                
+
                 chance = random.choice(["jugar"] + ["pass"] + ["jugar"])
                 if chance == "pass":
                     return "pass"
@@ -201,7 +203,10 @@ class JugadorCPU(Jugador):
                     calif = random.choice(calif)
                     # Elige la carta de menor valor de su mano
                     cartaAJugar = self.mano[calif][0]
-                    self.mano[cartaAJugar.calificacionNaipe()].remove(cartaAJugar)
+
+                    self.mano[cartaAJugar.calificacionNaipe()].remove(
+                        cartaAJugar)
+
                     return cartaAJugar
 
                 else:  # Significa que hay cartas en juego
@@ -219,7 +224,9 @@ class JugadorCPU(Jugador):
             else:  # Toca defender
                 # Ultima carta jugada/Carta del atacante al defensor.
                 lastCard = listaCartasEnJuego["ataque"][-1]
-                posiblesCartas = self.buscarCartas(lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
+                posiblesCartas = self.buscarCartas(
+                    lastCard.valorNaipe(), trump, lastCard.calificacionNaipe())
+
 
             # Si no se encontro ninguna carta para jugar, pasara el turno.
             if len(posiblesCartas) == 0:
