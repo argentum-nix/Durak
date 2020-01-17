@@ -40,7 +40,7 @@ Para mayor información revisar la Wiki de pygame: [pygame.org](https://www.pyga
 # Créditos
 - Software utilizado para obtener pixel-art: [Pixelator](http://pixelatorapp.com/)
 - Naipes: [Card Pack](https://opengameart.org/content/cards-set) by Andrew Tidey
-- BGM de juego: [BEAR! (VRC6)] by lamsorz
+- BGM de juego: [BEAR! (VRC6)](https://chipmusic.org/lamsorz/music/bear!-vrc6) by lamsorz
 - BGM de menu/splash screen: [Kalinka](https://soundcloud.com/christopher-huddleston/kalinka) by Christopher Huddleston
 
 
