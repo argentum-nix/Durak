@@ -38,9 +38,9 @@ python -m pip install pygame
 Para mayor información revisar la Wiki de pygame: [pygame.org](https://www.pygame.org/wiki/GettingStarted)
 
 # Créditos
-Software utilizado para obtener pixel-art: [Pixelator](http://pixelatorapp.com/)
-Naipes: [Card Pack](https://opengameart.org/content/cards-set) by Andrew Tidey
-BGM de juego: [BEAR! (VRC6)] by lamsorz
-BGM de menu/splash screen: [Kalinka](https://soundcloud.com/christopher-huddleston/kalinka) by 
+-Software utilizado para obtener pixel-art: [Pixelator](http://pixelatorapp.com/)
+-Naipes: [Card Pack](https://opengameart.org/content/cards-set) by Andrew Tidey
+-BGM de juego: [BEAR! (VRC6)] by lamsorz
+-BGM de menu/splash screen: [Kalinka](https://soundcloud.com/christopher-huddleston/kalinka) by Christopher Huddleston
 
 
