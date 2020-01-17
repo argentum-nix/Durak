@@ -46,3 +46,4 @@ class Estados_Juego:
 
         self.quit = False
         self.st_done = False
+        self.durak = -1
