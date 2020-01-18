@@ -1,30 +1,29 @@
+import shutil
 import os
 
-'''
-current_dir()
-|   Función que ocupa os.getcwd
-|   para retonar la direccion actual.
-'''
+
+# borra los archivos pyc y __pycache__
+def limpiar_dir():
+    for root, dirs, files in os.walk('.'):
+        for dir in dirs:
+            if dir == '__pycache__':
+                path = os.path.join(root, dir)
+                print('Borrando {}'.format(os.path.abspath(path)))
+                shutil.rmtree(path)
+        for name in files:
+            if name.endswith('.pyc'):
+                path = os.path.join(root, name)
+                print('Borrando {}'.format(os.path.abspath(path)))
+                os.remove(path)
 
 
+# retorna direccion actual
 def current_dir():
     return os.getcwd()
 
 
-'''
-exists(file)
-|   Retorna si el archivo existe o no en la carpeta actual.
-'''
-
-
 def exists(file):
     return os.path.exists(file)
-
-
-'''
-write_txt(file, what)
-|   Escribe una línea al archivo file, de contenido what.
-'''
 
 
 def write_txt(file, what):
@@ -32,20 +31,8 @@ def write_txt(file, what):
         f.write(what)
 
 
-'''
-delete_txt(file)
-|   Función, que ocupa os.remove, para borrar un archivo txt.
-'''
-
-
 def delete_txt(file):
     os.remove(file)
-
-
-'''
-class Estados_Juego
-|   Clase con algunas variables globales para toda clase.
-'''
 
 
 class Estados_Juego:
@@ -59,4 +46,3 @@ class Estados_Juego:
 
         self.quit = False
         self.st_done = False
-        self.durak = -1

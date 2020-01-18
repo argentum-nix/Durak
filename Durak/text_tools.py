@@ -1,7 +1,6 @@
 import pygame
 from sys_tools import current_dir
 
-# Definición de camino al font y los tamaños.
 path = current_dir() + "/data/fonts/font.ttf"
 pygame.font.init()
 font_T = pygame.font.Font(path, 15)
@@ -9,13 +8,6 @@ font_S = pygame.font.Font(path, 20)
 font_M = pygame.font.Font(path, 60)
 font_B = pygame.font.Font(path, 80)
 font_L = pygame.font.Font(path, 100)
-
-'''
-render_text(size, text, color)
-|   Dependiente de tamaño de texto que se
-|   requiere, la funcion genera el texto renderizado
-|   y lo retorna.
-'''
 
 
 def render_text(size, text, color):
