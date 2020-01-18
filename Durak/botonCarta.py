@@ -6,7 +6,14 @@ from naipe import Naipe
 # pensar en que jackets de los AI's se ponen azules al estar activos.
 '''
 class BotonCarta():
-|
+|   Clase, que corresponde a los botones interactivos, con una (o dos)
+|   imagines asociadas. Se usa en clases menu y juego, para obtener 
+|   naipes interactivos. Para instanciar la clase se debe especificar 
+|   la posición en la pantalla (x, y), la anchura y altura de la imágen
+|   (width, height), nombre de la imágen, nombre de la 2da imágen y si
+|   la carta, de hecho, es interactiva o cambia de imágen en algún 
+|   momento, como, por ejemplo, lo hacen los naipes en menu pasar el 
+|   mouse sobre ellos.
 |
 '''
 
