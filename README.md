@@ -1,7 +1,7 @@
 # Durak
 
 
-Clásico juego ruso de naipes, desarollado en Python con pygame. ![alt_text](https://img.shields.io/badge/approved-yes-green) ![alt_text](https://img.shields.io/badge/build-stable-green) ![alt_text](https://img.shields.io/badge/coverage-90%25-green)
+Clásico juego ruso de naipes, desarollado en Python con pygame. ![alt_text](https://img.shields.io/badge/approved-yes-green) ![alt_text](https://img.shields.io/badge/build-stable-green) ![alt_text](https://img.shields.io/badge/coverage-100%25-green)
 
 
 # Integrantes
