@@ -80,6 +80,7 @@ class Tutorial(st.Estados_Juego):
     |   lista de instruccuiones self.strings. Además, el fondo de pantalla 
     |   tambien cambia, en funcion de la instruccion/posicion en self.strings.
     |   CONCEPTOS DE CURSO: Comprensión de listas.
+
     '''
 
     def render(self, clock, screen, p):
@@ -112,7 +113,6 @@ class Tutorial(st.Estados_Juego):
             if self.i == 21:
                 curr = self.bg_array[4]
             # Expliaciones que quedan.
-
             if self.i == 32:
                 curr = self.bg_array[0]
             pygame.display.update()
