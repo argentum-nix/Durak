@@ -25,6 +25,7 @@ class Question(st.Estados_Juego):
         self.skip = BotonCarta(260, 240, 90, 90, "skip.png", False, True)
         self.show_tut = BotonCarta(
             450, 240, 90, 90, "continue.png", False, True)
+
     '''
     skipCheck(self)
     |   Función, que obtiene la respuesta de usuario, guardad en log.txt
@@ -60,6 +61,7 @@ class Question(st.Estados_Juego):
                 self.answer = False
         finally:
             f.close()
+
     '''
     get_event(self, event, keys)
     |   Función, que analiza los eventos de juego. Al cerrar la ventana (ESC),
