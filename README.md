@@ -14,7 +14,7 @@ Universidad Técnica Santa María <br/>
 <ignacio.jorquera@sansano.usm.cl>
 
 # Presentación
-[link](https://drive.google.com/file/d/1fkuN2rho7tPB_6IRfV1lcqqAyVw-Pg4U/view)
+[Video](https://drive.google.com/file/d/1fkuN2rho7tPB_6IRfV1lcqqAyVw-Pg4U/view)
 # Ejecución
 ```bash 
 python3 main.py
