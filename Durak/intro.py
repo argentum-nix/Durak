@@ -39,11 +39,6 @@ class Intro(st.Estados_Juego):
             self.st_done = True
             self.next = "MENU"
 
-    def render(self, clock, screen, p):
-        pygame.mixer.music.load("data/other/menu_intro.mp3")
-        pygame.mixer.music.play(1, 0.0)
-        screen.fill(self.background_color)
-
     '''
     makeBotones(self)
     |
@@ -56,7 +51,6 @@ class Intro(st.Estados_Juego):
         pygame.mixer.music.load("data/other/menu_intro.mp3")
         pygame.mixer.music.play(1, 0.0)
         screen.fill(self.background_color)
-
         text_logo = tt.render_text("L", "Durak", self.white)
         screen.blit(text_logo, (p[0] / 2 - text_logo.get_width() //
                                 2, p[1] / 2 - text_logo.get_height() // 2))

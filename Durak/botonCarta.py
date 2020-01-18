@@ -4,7 +4,18 @@ from naipe import Naipe
 
 # recibe una img extra, "activa", si la imagen debe cambiar.
 # pensar en que jackets de los AI's se ponen azules al estar activos.
-
+'''
+class BotonCarta():
+|   Clase, que corresponde a los botones interactivos, con una (o dos)
+|   imagines asociadas. Se usa en clases menu y juego, para obtener 
+|   naipes interactivos. Para instanciar la clase se debe especificar 
+|   la posición en la pantalla (x, y), la anchura y altura de la imágen
+|   (width, height), nombre de la imágen, nombre de la 2da imágen y si
+|   la carta, de hecho, es interactiva o cambia de imágen en algún 
+|   momento, como, por ejemplo, lo hacen los naipes en menu pasar el 
+|   mouse sobre ellos.
+|
+'''
 
 class BotonCarta():
     def __init__(self, x, y, width, height, nombre, activa, enabled):
@@ -32,6 +43,13 @@ class BotonCarta():
         self.enabled = enabled
 
         self.name = nombre
+    '''
+    mouseOverButton(self, mode, h)
+    |   Función que se usa para "subir" las cartas del usuario, 
+    |   en el caso de que sea su turno de defenderse o atacar,y
+    |   además, de que sean cartas posibles de usar y el 
+    |   usuario tenga su mouse sobre ella.
+    '''
 
     def mouseOverButton(self, mode, h):
         if self.enabled == True:
@@ -40,43 +58,54 @@ class BotonCarta():
                 self.tall = h
             else:
                 self.tall = self.tall_aux
-        else:
-            # nada lol
-            pass
-            print("No se puede utilizar la carta seleccionada.")
 
-    # se usara para cambiar de jacket para los jugadores NPC
-    # y en menu
+    '''
+    isActivePlayer(self, param)
+    |   Cambia la imagen asociada al botón por la segúnda asocidada,
+    |   en caso de que el boton la tenga.
+    '''
+
     def isActivePlayer(self, param):
         if param:
             self.imagen = self.imagen_activa
         else:
             self.imagen = self.imagen_inactiva
-
-    def turnOffBoton(self):
-        self.enabled = False
-
-    def turnOnBoton(self):
-        self.enabled = True
+    '''
+    getRekt(self)
+    |   Función tipo get, que retorna el objeto Rect() del botón.
+    '''
 
     def getRekt(self):
         return self.u1
+    '''
+    getImg(self)
+    |   Función tipo get, que retorna la imagen, asociada al botón.
+    '''
 
     def getImg(self):
         return self.imagen
+    '''
+    getX(self)
+    |   Función tipo get, que retorna el ancho del botón.
+    '''
 
     def getX(self):
         return self.long
+    '''
+    getY(self)
+    |   Función tipo get, que retorna la altura del botón.
+    '''
 
     def getY(self):
         return self.tall
-
-    def getNombre(self):
-        return self.name
+    '''
+    makeNaipe(self)
+    |   Función que se usa para crear un naipe, el cual sera
+    |   retornado cuando el usuario haga el click en la carta
+    |   que quiere jugar.
+    '''
 
     def makeNaipe(self):
-        # Se usa para crear un naipe, el cual sera retornado cuando el usuario haga click
-        # en la carta que quiere jugar
         if self.name == "NULL.png":
             return Naipe("Null", 0)
         if self.name[0] == "C":

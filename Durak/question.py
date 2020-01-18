@@ -4,14 +4,19 @@ import text_tools as tt
 import pygame
 from botonCarta import BotonCarta
 
+'''
+class Question(st.Estados_Juego)
+|   Clase, que se instancia para revisar
+|   si el jugador queire ver el tutorial.
+'''
+
 
 class Question(st.Estados_Juego):
     def __init__(self):
-        print("Instancee exitosamente clase Question")
         st.Estados_Juego.__init__(self)
         self.skipCheck()
-        # si el answer es falso, queremos ver el tutorial
-        # si es true, quierp salir inmediatamente
+        # Si self.answer = False, veremos el tutorial.
+        # En caso contrario, la clase Question cambia a clase Juego.
         if self.answer:
             self.st_done = True
             self.next = "JUEGO"
@@ -20,6 +25,22 @@ class Question(st.Estados_Juego):
         self.skip = BotonCarta(260, 240, 90, 90, "skip.png", False, True)
         self.show_tut = BotonCarta(
             450, 240, 90, 90, "continue.png", False, True)
+
+    '''
+    skipCheck(self)
+    |   Función, que obtiene la respuesta de usuario, guardad en log.txt
+    |   Se usa try-except-finally para revisar que el archivo existe, y,
+    |   usando split, obtener la respuesta, pasandola a booleanos con el
+    |   operador ternario.
+    |
+    |   En caso de que el archivo tenga forma, distinta a answer: f o t,
+    |   se considera que el archivo esta rota, y este se borra,
+    |   escribiendo la respuesta answer:f por default.
+    |
+    |   Por default, answer:f significa que se preguntará al usuario si
+    |   este quiere ver el tutorial o si quiere saltarlo.
+    |   CONCEPTOS DE CURSO: Manejo de Errores.
+    '''
 
     def skipCheck(self):
         try:
@@ -41,22 +62,38 @@ class Question(st.Estados_Juego):
         finally:
             f.close()
 
-    def clean(self):
-        pass
+    '''
+    get_event(self, event, keys)
+    |   Función, que analiza los eventos de juego. Al cerrar la ventana (ESC),
+    |   el evento corresponde a pygame.QUIT y se termina la ejecución del código.
+    |   En caso de presionar botón NO, el jugador pasa a la fase de Tutorial.
+    |   Al usar botón SI, el jugador accede directamente al juego.
+    '''
 
     def get_event(self, event, keys):
         if event.type == pygame.MOUSEBUTTONDOWN:
-
-            # ya no quiero ver el tutorial, tengo que reescribir el archivo
             if self.skip.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
                 st.write_txt("log.txt", "answer:t")
                 self.next = "JUEGO"
-            # queremos ver el tutorial, no cambio nada en archivo, sigue en answer:f
 
             elif self.show_tut.getRekt().collidepoint(pygame.mouse.get_pos()):
                 self.st_done = True
                 self.next = "TUTORIAL"
+
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+            self.quit = True
+            pygame.quit()
+            exit()
+
+    '''
+    render(self)
+    |   Funcion render, utilizada para mostrar la media y texto en la pantalla.
+    |   Se usa para demostrar una ventana con dos botones: SI y NO.
+    |   Al elegir SI,el usuario salta el tutorial y pasa al juego.
+    |   Al elegir NO, procederá a ver el tutorial.
+    |   USO DE CONCEPTOS: Comprensión de listas.
+    '''
 
     def render(self, clock, screen, p):
 
