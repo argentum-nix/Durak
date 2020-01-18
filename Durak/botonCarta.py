@@ -49,6 +49,7 @@ class BotonCarta():
     |   en el caso de que sea su turno de defenderse o atacar,y
     |   además, de que sean cartas posibles de usar y el 
     |   usuario tenga su mouse sobre ella.
+
     '''
 
     def mouseOverButton(self, mode, h):
