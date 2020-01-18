@@ -3,9 +3,9 @@
 
 Clásico juego ruso de naipes, desarollado en Python con pygame. ![alt_text](https://img.shields.io/badge/build-stable-green) ![alt_text](https://img.shields.io/badge/coverage-100%25-green)
 
-Proyecto final de ramo Lenguajes de Programación: INF 235, 2019-2
-
-Universidad Técnica Santa María, Campus San Joaquín
+Proyecto final de ramo *Lenguajes de Programación: INF 253* <br/>
+Universidad Técnica Santa María <br/>
+2019-2
 
 # Integrantes
 - Anastasiia Fedorova  201873505-1  
